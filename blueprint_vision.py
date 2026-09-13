@@ -17,7 +17,14 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Any, Optional
 import numpy as np
 import cv2
-from PIL import Image, ImageDraw, ImageOps, ImageFilter
+try:
+    from PIL import Image, ImageDraw, ImageOps, ImageFilter
+except ImportError:
+    Image = None
+    ImageDraw = None
+    ImageOps = None
+    ImageFilter = None
+
 
 def detect_floor_configuration(notes_text: str = "", default_floors: int = 1) -> int:
     """

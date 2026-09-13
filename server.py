@@ -476,33 +476,61 @@ async def api_vcad_cadastre(request):
                 if lvl:
                     level_map[lvl] = found_p
 
-        _, payload = build_multi_level_cadastre(
-            parent_ulpin=parent_ulpin,
-            building_name=prop.get("name", "Building"),
-            building_height=b_height,
-            floors_count=f_count,
-            building_depth=b_depth,
-            basements_count=b_count,
-            level_blueprints=level_map,
-            default_blueprint_path=primary_bp
-        )
+        try:
+            _, payload = build_multi_level_cadastre(
+                parent_ulpin=parent_ulpin,
+                building_name=prop.get("name", "Building"),
+                building_height=b_height,
+                floors_count=f_count,
+                building_depth=b_depth,
+                basements_count=b_count,
+                level_blueprints=level_map,
+                default_blueprint_path=primary_bp
+            )
+        except Exception as e:
+            print(f"[WARN] Error in blueprint extrusion for {ulpin}: {e}, falling back to geometric cadastre")
+            _, payload = build_multi_level_cadastre(
+                parent_ulpin=parent_ulpin,
+                building_name=prop.get("name", "Building"),
+                building_height=b_height,
+                floors_count=f_count,
+                building_depth=b_depth,
+                basements_count=b_count,
+                level_blueprints={},
+                default_blueprint_path=None
+            )
         payload["property_ulpin"] = ulpin
-        model_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        try:
+            model_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        except Exception:
+            pass
         CURRENT_CADASTRE_CACHE[ulpin] = payload
         CURRENT_CADASTRE_CACHE["last"] = payload
         return JSONResponse(payload)
 
     sample = SAMPLE_DIR / "Screenshot 2026-09-08 074503.png"
     sample_path = str(sample) if sample.exists() else None
-    _, payload = build_multi_level_cadastre(
-        parent_ulpin=DEFAULT_PARENT_ULPIN,
-        building_name="Default Demonstration Complex",
-        building_height=12.0,
-        floors_count=4,
-        building_depth=3.0,
-        basements_count=1,
-        default_blueprint_path=sample_path
-    )
+    try:
+        _, payload = build_multi_level_cadastre(
+            parent_ulpin=DEFAULT_PARENT_ULPIN,
+            building_name="Default Demonstration Complex",
+            building_height=12.0,
+            floors_count=4,
+            building_depth=3.0,
+            basements_count=1,
+            default_blueprint_path=sample_path
+        )
+    except Exception as e:
+        print(f"[WARN] Error building default cadastre: {e}")
+        _, payload = build_multi_level_cadastre(
+            parent_ulpin=DEFAULT_PARENT_ULPIN,
+            building_name="Default Demonstration Complex",
+            building_height=12.0,
+            floors_count=4,
+            building_depth=3.0,
+            basements_count=1,
+            default_blueprint_path=None
+        )
     CURRENT_CADASTRE_CACHE["default"] = payload
     CURRENT_CADASTRE_CACHE["last"] = payload
     return JSONResponse(payload)
