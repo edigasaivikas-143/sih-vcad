@@ -1,0 +1,1364 @@
+{
+  "type": "FeatureCollection",
+  "parent_2d_ulpin": "12345678901234",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -6.0,
+              -3.95,
+              0.0
+            ],
+            [
+              6.0,
+              -3.95,
+              0.0
+            ],
+            [
+              6.0,
+              3.95,
+              0.0
+            ],
+            [
+              -6.0,
+              3.95,
+              0.0
+            ],
+            [
+              -6.0,
+              -3.95,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "building_a",
+        "name": "Cadastre Building (1788853209017_1)",
+        "type": "BUILDING",
+        "floor": "F01-F04",
+        "space_class": "V",
+        "rights": "COM",
+        "unit_id": "BLK_1",
+        "ulpin_3d": "12345678901234-G00-V-COM-BLK_1-V01",
+        "ulpin_numeric": "123456789012340010001",
+        "owner": "Community",
+        "carpet_area_sqm": 94.8,
+        "z_min": 0.0,
+        "z_max": 8.4,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -6.0,
+              -3.95,
+              0.0
+            ],
+            [
+              6.0,
+              -3.95,
+              0.0
+            ],
+            [
+              6.0,
+              3.95,
+              0.0
+            ],
+            [
+              -6.0,
+              3.95,
+              0.0
+            ],
+            [
+              -6.0,
+              -3.95,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "flat_101",
+        "name": "Floor 1 Suite (1101)",
+        "type": "FLAT",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1101",
+        "ulpin_3d": "12345678901234-F01-V-PRV-1101-V01",
+        "ulpin_numeric": "123456789012340010101",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 86.95,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.88,
+              -2.02,
+              0.0
+            ],
+            [
+              5.88,
+              -2.02,
+              0.0
+            ],
+            [
+              5.88,
+              0.76,
+              0.0
+            ],
+            [
+              -5.88,
+              0.76,
+              0.0
+            ],
+            [
+              -5.88,
+              -2.02,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F01_room_1",
+        "name": "Main Living & Lounge (32.55m\u00b2) (F01)",
+        "type": "ROOM",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1101_LIV",
+        "ulpin_3d": "12345678901234-F01-V-PRV-1101_LIV-V01",
+        "ulpin_numeric": "123456789012340010101",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 32.55,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.91,
+              -3.25,
+              0.0
+            ],
+            [
+              5.88,
+              -3.25,
+              0.0
+            ],
+            [
+              5.88,
+              -0.34,
+              0.0
+            ],
+            [
+              1.91,
+              -0.34,
+              0.0
+            ],
+            [
+              1.91,
+              -3.25,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F01_room_2",
+        "name": "Master Bedroom Suite (North Wing \u2022 11.55m\u00b2) (F01)",
+        "type": "ROOM",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1101_BED1",
+        "ulpin_3d": "12345678901234-F01-V-PRV-1101_BED1-V01",
+        "ulpin_numeric": "123456789012340010102",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 11.55,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.87,
+              -3.25,
+              0.0
+            ],
+            [
+              -1.91,
+              -3.25,
+              0.0
+            ],
+            [
+              -1.91,
+              -0.34,
+              0.0
+            ],
+            [
+              -5.87,
+              -0.34,
+              0.0
+            ],
+            [
+              -5.87,
+              -3.25,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F01_room_3",
+        "name": "Kitchen & Dining (West Wing \u2022 11.52m\u00b2) (F01)",
+        "type": "ROOM",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1101_KIT",
+        "ulpin_3d": "12345678901234-F01-V-PRV-1101_KIT-V01",
+        "ulpin_numeric": "123456789012340010103",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 11.52,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.91,
+              0.54,
+              0.0
+            ],
+            [
+              5.88,
+              0.54,
+              0.0
+            ],
+            [
+              5.88,
+              3.06,
+              0.0
+            ],
+            [
+              1.91,
+              3.06,
+              0.0
+            ],
+            [
+              1.91,
+              0.54,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F01_room_4",
+        "name": "Bedroom 2 / Guest Room (10.04m\u00b2) (F01)",
+        "type": "ROOM",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1101_BED2",
+        "ulpin_3d": "12345678901234-F01-V-PRV-1101_BED2-V01",
+        "ulpin_numeric": "123456789012340010104",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 10.04,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.87,
+              0.54,
+              0.0
+            ],
+            [
+              -1.91,
+              0.54,
+              0.0
+            ],
+            [
+              -1.91,
+              3.06,
+              0.0
+            ],
+            [
+              -5.87,
+              3.06,
+              0.0
+            ],
+            [
+              -5.87,
+              0.54,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F01_room_5",
+        "name": "Private Office / Studio (10.02m\u00b2) (F01)",
+        "type": "ROOM",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1101_OFF",
+        "ulpin_3d": "12345678901234-F01-V-PRV-1101_OFF-V01",
+        "ulpin_numeric": "123456789012340010105",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 10.02,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -1.75,
+              0.76,
+              0.0
+            ],
+            [
+              1.75,
+              0.76,
+              0.0
+            ],
+            [
+              1.75,
+              3.38,
+              0.0
+            ],
+            [
+              -1.75,
+              3.38,
+              0.0
+            ],
+            [
+              -1.75,
+              0.76,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F01_room_6",
+        "name": "Bathroom & Ensuite (9.16m\u00b2) (F01)",
+        "type": "ROOM",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1101_BATH",
+        "ulpin_3d": "12345678901234-F01-V-PRV-1101_BATH-V01",
+        "ulpin_numeric": "123456789012340010106",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 9.16,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -1.75,
+              3.41,
+              0.0
+            ],
+            [
+              1.75,
+              3.41,
+              0.0
+            ],
+            [
+              1.75,
+              4.01,
+              0.0
+            ],
+            [
+              -1.75,
+              4.01,
+              0.0
+            ],
+            [
+              -1.75,
+              3.41,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F01_room_7",
+        "name": "Utility & Laundry (2.11m\u00b2) (F01)",
+        "type": "ROOM",
+        "floor": "F01",
+        "space_class": "U",
+        "rights": "PRV",
+        "unit_id": "1101_LAU",
+        "ulpin_3d": "12345678901234-F01-U-PRV-1101_LAU-V01",
+        "ulpin_numeric": "123456789012340010107",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 2.11,
+        "z_min": 0.0,
+        "z_max": 2.8,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -6.0,
+              -3.95,
+              2.8
+            ],
+            [
+              6.0,
+              -3.95,
+              2.8
+            ],
+            [
+              6.0,
+              3.95,
+              2.8
+            ],
+            [
+              -6.0,
+              3.95,
+              2.8
+            ],
+            [
+              -6.0,
+              -3.95,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "flat_201",
+        "name": "Floor 2 Suite (1201)",
+        "type": "FLAT",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1201",
+        "ulpin_3d": "12345678901234-F02-V-PRV-1201-V01",
+        "ulpin_numeric": "123456789012340010201",
+        "owner": "Owner B (Priya Sharma)",
+        "carpet_area_sqm": 86.95,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.88,
+              -2.02,
+              2.8
+            ],
+            [
+              5.88,
+              -2.02,
+              2.8
+            ],
+            [
+              5.88,
+              0.76,
+              2.8
+            ],
+            [
+              -5.88,
+              0.76,
+              2.8
+            ],
+            [
+              -5.88,
+              -2.02,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F02_room_1",
+        "name": "Main Living & Lounge (32.55m\u00b2) (F02)",
+        "type": "ROOM",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1201_LIV",
+        "ulpin_3d": "12345678901234-F02-V-PRV-1201_LIV-V01",
+        "ulpin_numeric": "123456789012340010201",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 32.55,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.91,
+              -3.25,
+              2.8
+            ],
+            [
+              5.88,
+              -3.25,
+              2.8
+            ],
+            [
+              5.88,
+              -0.34,
+              2.8
+            ],
+            [
+              1.91,
+              -0.34,
+              2.8
+            ],
+            [
+              1.91,
+              -3.25,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F02_room_2",
+        "name": "Master Bedroom Suite (North Wing \u2022 11.55m\u00b2) (F02)",
+        "type": "ROOM",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1201_BED1",
+        "ulpin_3d": "12345678901234-F02-V-PRV-1201_BED1-V01",
+        "ulpin_numeric": "123456789012340010202",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 11.55,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.87,
+              -3.25,
+              2.8
+            ],
+            [
+              -1.91,
+              -3.25,
+              2.8
+            ],
+            [
+              -1.91,
+              -0.34,
+              2.8
+            ],
+            [
+              -5.87,
+              -0.34,
+              2.8
+            ],
+            [
+              -5.87,
+              -3.25,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F02_room_3",
+        "name": "Kitchen & Dining (West Wing \u2022 11.52m\u00b2) (F02)",
+        "type": "ROOM",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1201_KIT",
+        "ulpin_3d": "12345678901234-F02-V-PRV-1201_KIT-V01",
+        "ulpin_numeric": "123456789012340010203",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 11.52,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.91,
+              0.54,
+              2.8
+            ],
+            [
+              5.88,
+              0.54,
+              2.8
+            ],
+            [
+              5.88,
+              3.06,
+              2.8
+            ],
+            [
+              1.91,
+              3.06,
+              2.8
+            ],
+            [
+              1.91,
+              0.54,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F02_room_4",
+        "name": "Bedroom 2 / Guest Room (10.04m\u00b2) (F02)",
+        "type": "ROOM",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1201_BED2",
+        "ulpin_3d": "12345678901234-F02-V-PRV-1201_BED2-V01",
+        "ulpin_numeric": "123456789012340010204",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 10.04,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.87,
+              0.54,
+              2.8
+            ],
+            [
+              -1.91,
+              0.54,
+              2.8
+            ],
+            [
+              -1.91,
+              3.06,
+              2.8
+            ],
+            [
+              -5.87,
+              3.06,
+              2.8
+            ],
+            [
+              -5.87,
+              0.54,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F02_room_5",
+        "name": "Private Office / Studio (10.02m\u00b2) (F02)",
+        "type": "ROOM",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1201_OFF",
+        "ulpin_3d": "12345678901234-F02-V-PRV-1201_OFF-V01",
+        "ulpin_numeric": "123456789012340010205",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 10.02,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -1.75,
+              0.76,
+              2.8
+            ],
+            [
+              1.75,
+              0.76,
+              2.8
+            ],
+            [
+              1.75,
+              3.38,
+              2.8
+            ],
+            [
+              -1.75,
+              3.38,
+              2.8
+            ],
+            [
+              -1.75,
+              0.76,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F02_room_6",
+        "name": "Bathroom & Ensuite (9.16m\u00b2) (F02)",
+        "type": "ROOM",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1201_BATH",
+        "ulpin_3d": "12345678901234-F02-V-PRV-1201_BATH-V01",
+        "ulpin_numeric": "123456789012340010206",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 9.16,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -1.75,
+              3.41,
+              2.8
+            ],
+            [
+              1.75,
+              3.41,
+              2.8
+            ],
+            [
+              1.75,
+              4.01,
+              2.8
+            ],
+            [
+              -1.75,
+              4.01,
+              2.8
+            ],
+            [
+              -1.75,
+              3.41,
+              2.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F02_room_7",
+        "name": "Utility & Laundry (2.11m\u00b2) (F02)",
+        "type": "ROOM",
+        "floor": "F02",
+        "space_class": "U",
+        "rights": "PRV",
+        "unit_id": "1201_LAU",
+        "ulpin_3d": "12345678901234-F02-U-PRV-1201_LAU-V01",
+        "ulpin_numeric": "123456789012340010207",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 2.11,
+        "z_min": 2.8,
+        "z_max": 5.6,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -6.0,
+              -3.95,
+              5.6
+            ],
+            [
+              6.0,
+              -3.95,
+              5.6
+            ],
+            [
+              6.0,
+              3.95,
+              5.6
+            ],
+            [
+              -6.0,
+              3.95,
+              5.6
+            ],
+            [
+              -6.0,
+              -3.95,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "flat_301",
+        "name": "Floor 3 Suite (1301)",
+        "type": "FLAT",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1301",
+        "ulpin_3d": "12345678901234-F03-V-PRV-1301-V01",
+        "ulpin_numeric": "123456789012340010301",
+        "owner": "Owner C (Vikram Rao)",
+        "carpet_area_sqm": 86.95,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.88,
+              -2.02,
+              5.6
+            ],
+            [
+              5.88,
+              -2.02,
+              5.6
+            ],
+            [
+              5.88,
+              0.76,
+              5.6
+            ],
+            [
+              -5.88,
+              0.76,
+              5.6
+            ],
+            [
+              -5.88,
+              -2.02,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F03_room_1",
+        "name": "Main Living & Lounge (32.55m\u00b2) (F03)",
+        "type": "ROOM",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1301_LIV",
+        "ulpin_3d": "12345678901234-F03-V-PRV-1301_LIV-V01",
+        "ulpin_numeric": "123456789012340010301",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 32.55,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.91,
+              -3.25,
+              5.6
+            ],
+            [
+              5.88,
+              -3.25,
+              5.6
+            ],
+            [
+              5.88,
+              -0.34,
+              5.6
+            ],
+            [
+              1.91,
+              -0.34,
+              5.6
+            ],
+            [
+              1.91,
+              -3.25,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F03_room_2",
+        "name": "Master Bedroom Suite (North Wing \u2022 11.55m\u00b2) (F03)",
+        "type": "ROOM",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1301_BED1",
+        "ulpin_3d": "12345678901234-F03-V-PRV-1301_BED1-V01",
+        "ulpin_numeric": "123456789012340010302",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 11.55,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.87,
+              -3.25,
+              5.6
+            ],
+            [
+              -1.91,
+              -3.25,
+              5.6
+            ],
+            [
+              -1.91,
+              -0.34,
+              5.6
+            ],
+            [
+              -5.87,
+              -0.34,
+              5.6
+            ],
+            [
+              -5.87,
+              -3.25,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F03_room_3",
+        "name": "Kitchen & Dining (West Wing \u2022 11.52m\u00b2) (F03)",
+        "type": "ROOM",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1301_KIT",
+        "ulpin_3d": "12345678901234-F03-V-PRV-1301_KIT-V01",
+        "ulpin_numeric": "123456789012340010303",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 11.52,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.91,
+              0.54,
+              5.6
+            ],
+            [
+              5.88,
+              0.54,
+              5.6
+            ],
+            [
+              5.88,
+              3.06,
+              5.6
+            ],
+            [
+              1.91,
+              3.06,
+              5.6
+            ],
+            [
+              1.91,
+              0.54,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F03_room_4",
+        "name": "Bedroom 2 / Guest Room (10.04m\u00b2) (F03)",
+        "type": "ROOM",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1301_BED2",
+        "ulpin_3d": "12345678901234-F03-V-PRV-1301_BED2-V01",
+        "ulpin_numeric": "123456789012340010304",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 10.04,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.87,
+              0.54,
+              5.6
+            ],
+            [
+              -1.91,
+              0.54,
+              5.6
+            ],
+            [
+              -1.91,
+              3.06,
+              5.6
+            ],
+            [
+              -5.87,
+              3.06,
+              5.6
+            ],
+            [
+              -5.87,
+              0.54,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F03_room_5",
+        "name": "Private Office / Studio (10.02m\u00b2) (F03)",
+        "type": "ROOM",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1301_OFF",
+        "ulpin_3d": "12345678901234-F03-V-PRV-1301_OFF-V01",
+        "ulpin_numeric": "123456789012340010305",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 10.02,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -1.75,
+              0.76,
+              5.6
+            ],
+            [
+              1.75,
+              0.76,
+              5.6
+            ],
+            [
+              1.75,
+              3.38,
+              5.6
+            ],
+            [
+              -1.75,
+              3.38,
+              5.6
+            ],
+            [
+              -1.75,
+              0.76,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F03_room_6",
+        "name": "Bathroom & Ensuite (9.16m\u00b2) (F03)",
+        "type": "ROOM",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "unit_id": "1301_BATH",
+        "ulpin_3d": "12345678901234-F03-V-PRV-1301_BATH-V01",
+        "ulpin_numeric": "123456789012340010306",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 9.16,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -1.75,
+              3.41,
+              5.6
+            ],
+            [
+              1.75,
+              3.41,
+              5.6
+            ],
+            [
+              1.75,
+              4.01,
+              5.6
+            ],
+            [
+              -1.75,
+              4.01,
+              5.6
+            ],
+            [
+              -1.75,
+              3.41,
+              5.6
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "room_F03_room_7",
+        "name": "Utility & Laundry (2.11m\u00b2) (F03)",
+        "type": "ROOM",
+        "floor": "F03",
+        "space_class": "U",
+        "rights": "PRV",
+        "unit_id": "1301_LAU",
+        "ulpin_3d": "12345678901234-F03-U-PRV-1301_LAU-V01",
+        "ulpin_numeric": "123456789012340010307",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 2.11,
+        "z_min": 5.6,
+        "z_max": 8.399999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.8,
+              -3.75,
+              8.399999999999999
+            ],
+            [
+              5.8,
+              -3.75,
+              8.399999999999999
+            ],
+            [
+              5.8,
+              3.75,
+              8.399999999999999
+            ],
+            [
+              -5.8,
+              3.75,
+              8.399999999999999
+            ],
+            [
+              -5.8,
+              -3.75,
+              8.399999999999999
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "terrace_1",
+        "name": "Rooftop Terrace T1",
+        "type": "TERRACE",
+        "floor": "R00",
+        "space_class": "E",
+        "rights": "COM",
+        "unit_id": "TERR01",
+        "ulpin_3d": "12345678901234-R00-E-COM-TERR01-V01",
+        "ulpin_numeric": "123456789012340019901",
+        "owner": "Community",
+        "carpet_area_sqm": 90.1,
+        "z_min": 8.399999999999999,
+        "z_max": 10.899999999999999,
+        "parent_2d_ulpin": "12345678901234",
+        "is_clean_title": true
+      }
+    }
+  ]
+}

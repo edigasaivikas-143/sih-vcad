@@ -1,0 +1,943 @@
+{
+  "type": "FeatureCollection",
+  "name": "SVAMITVA_3D_CADASTRE_12345678901234",
+  "parent_2d_ulpin": "12345678901234",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "building_a",
+        "unit_id": "BLKA",
+        "name": "Block A",
+        "type": "BUILDING",
+        "floor": "G00",
+        "space_class": "V",
+        "rights": "COM",
+        "ulpin_3d": "12345678901234-G00-V-COM-BLKA-V01",
+        "ulpin_numeric": "123456789012340010001",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Community",
+        "carpet_area_sqm": 384.0,
+        "carpet_area_sqft": 4133.3,
+        "z_min": 0.0,
+        "z_max": 12.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -8.0,
+              -12.0,
+              0.0
+            ],
+            [
+              8.0,
+              -12.0,
+              0.0
+            ],
+            [
+              8.0,
+              12.0,
+              0.0
+            ],
+            [
+              -8.0,
+              12.0,
+              0.0
+            ],
+            [
+              -8.0,
+              -12.0,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "flat_101",
+        "unit_id": "A101",
+        "name": "Flat 101",
+        "type": "FLAT",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-F01-V-PRV-A101-V01",
+        "ulpin_numeric": "123456789012340010101",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 102.48,
+        "carpet_area_sqft": 1103.1,
+        "z_min": 0.0,
+        "z_max": 3.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -7.8,
+              -11.7,
+              0.0
+            ],
+            [
+              -0.4,
+              -11.7,
+              0.0
+            ],
+            [
+              -0.4,
+              11.7,
+              0.0
+            ],
+            [
+              -7.8,
+              11.7,
+              0.0
+            ],
+            [
+              -7.8,
+              -11.7,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "flat_102",
+        "unit_id": "A102",
+        "name": "Flat 102",
+        "type": "FLAT",
+        "floor": "F01",
+        "space_class": "V",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-F01-V-PRV-A102-V01",
+        "ulpin_numeric": "123456789012340010102",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner B (Priya Sharma)",
+        "carpet_area_sqm": 101.71,
+        "carpet_area_sqft": 1094.8,
+        "z_min": 0.0,
+        "z_max": 3.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0.4,
+              -11.7,
+              0.0
+            ],
+            [
+              7.8,
+              -11.7,
+              0.0
+            ],
+            [
+              7.8,
+              11.7,
+              0.0
+            ],
+            [
+              0.4,
+              11.7,
+              0.0
+            ],
+            [
+              0.4,
+              -11.7,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "flat_201",
+        "unit_id": "A201",
+        "name": "Flat 201",
+        "type": "FLAT",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-F02-V-PRV-A201-V01",
+        "ulpin_numeric": "123456789012340010201",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 102.48,
+        "carpet_area_sqft": 1103.1,
+        "z_min": 3.0,
+        "z_max": 6.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -7.8,
+              -11.7,
+              3.0
+            ],
+            [
+              -0.4,
+              -11.7,
+              3.0
+            ],
+            [
+              -0.4,
+              11.7,
+              3.0
+            ],
+            [
+              -7.8,
+              11.7,
+              3.0
+            ],
+            [
+              -7.8,
+              -11.7,
+              3.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "flat_202",
+        "unit_id": "A202",
+        "name": "Flat 202",
+        "type": "FLAT",
+        "floor": "F02",
+        "space_class": "V",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-F02-V-PRV-A202-V01",
+        "ulpin_numeric": "123456789012340010202",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner C (Vikram Rao)",
+        "carpet_area_sqm": 101.71,
+        "carpet_area_sqft": 1094.8,
+        "z_min": 3.0,
+        "z_max": 6.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0.4,
+              -11.7,
+              3.0
+            ],
+            [
+              7.8,
+              -11.7,
+              3.0
+            ],
+            [
+              7.8,
+              11.7,
+              3.0
+            ],
+            [
+              0.4,
+              11.7,
+              3.0
+            ],
+            [
+              0.4,
+              -11.7,
+              3.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "flat_301",
+        "unit_id": "A301",
+        "name": "Flat 301",
+        "type": "FLAT",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-F03-V-PRV-A301-V01",
+        "ulpin_numeric": "123456789012340010301",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner D (Ramesh Gowda)",
+        "carpet_area_sqm": 102.48,
+        "carpet_area_sqft": 1103.1,
+        "z_min": 6.0,
+        "z_max": 9.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -7.8,
+              -11.7,
+              6.0
+            ],
+            [
+              -0.4,
+              -11.7,
+              6.0
+            ],
+            [
+              -0.4,
+              11.7,
+              6.0
+            ],
+            [
+              -7.8,
+              11.7,
+              6.0
+            ],
+            [
+              -7.8,
+              -11.7,
+              6.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "flat_302",
+        "unit_id": "A302",
+        "name": "Flat 302",
+        "type": "FLAT",
+        "floor": "F03",
+        "space_class": "V",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-F03-V-PRV-A302-V01",
+        "ulpin_numeric": "123456789012340010302",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner E (Suresh Patel)",
+        "carpet_area_sqm": 101.71,
+        "carpet_area_sqft": 1094.8,
+        "z_min": 6.0,
+        "z_max": 9.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0.4,
+              -11.7,
+              6.0
+            ],
+            [
+              7.8,
+              -11.7,
+              6.0
+            ],
+            [
+              7.8,
+              11.7,
+              6.0
+            ],
+            [
+              0.4,
+              11.7,
+              6.0
+            ],
+            [
+              0.4,
+              -11.7,
+              6.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "parking_p01",
+        "unit_id": "PRK01",
+        "name": "Parking P01",
+        "type": "PARKING",
+        "floor": "G00",
+        "space_class": "S",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-G00-S-PRV-PRK01-V01",
+        "ulpin_numeric": "123456789012340010010",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 12.5,
+        "carpet_area_sqft": 135.0,
+        "z_min": 0.0,
+        "z_max": 0.3
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -11.5,
+              2.0,
+              0.0
+            ],
+            [
+              -8.5,
+              2.0,
+              0.0
+            ],
+            [
+              -8.5,
+              4.5,
+              0.0
+            ],
+            [
+              -11.5,
+              4.5,
+              0.0
+            ],
+            [
+              -11.5,
+              2.0,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "parking_p02",
+        "unit_id": "PRK02",
+        "name": "Parking P02",
+        "type": "PARKING",
+        "floor": "G00",
+        "space_class": "S",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-G00-S-PRV-PRK02-V01",
+        "ulpin_numeric": "123456789012340010011",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner B (Priya Sharma)",
+        "carpet_area_sqm": 12.5,
+        "carpet_area_sqft": 135.0,
+        "z_min": 0.0,
+        "z_max": 0.3
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              8.5,
+              2.0,
+              0.0
+            ],
+            [
+              11.5,
+              2.0,
+              0.0
+            ],
+            [
+              11.5,
+              4.5,
+              0.0
+            ],
+            [
+              8.5,
+              4.5,
+              0.0
+            ],
+            [
+              8.5,
+              2.0,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "plot_17",
+        "unit_id": "P17",
+        "name": "Associated Plot 17",
+        "type": "PLOT",
+        "floor": "G00",
+        "space_class": "S",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-G00-S-PRV-P17-V01",
+        "ulpin_numeric": "123456789012340010017",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner A (Suresh Gowda)",
+        "carpet_area_sqm": 28.0,
+        "carpet_area_sqft": 301.0,
+        "z_min": 0.0,
+        "z_max": 0.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -11.5,
+              -5.0,
+              0.0
+            ],
+            [
+              -8.5,
+              -5.0,
+              0.0
+            ],
+            [
+              -8.5,
+              -1.5,
+              0.0
+            ],
+            [
+              -11.5,
+              -1.5,
+              0.0
+            ],
+            [
+              -11.5,
+              -5.0,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "stairs_s1",
+        "unit_id": "STAIR1",
+        "name": "Staircase S1",
+        "type": "STAIR",
+        "floor": "F00-F03",
+        "space_class": "V",
+        "rights": "COM",
+        "ulpin_3d": "12345678901234-G00-V-COM-STAIR1-V01",
+        "ulpin_numeric": "123456789012340010090",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Community",
+        "carpet_area_sqm": 18.0,
+        "carpet_area_sqft": 194.0,
+        "z_min": 0.0,
+        "z_max": 12.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.8,
+              9.5,
+              0.0
+            ],
+            [
+              0.8,
+              9.5,
+              0.0
+            ],
+            [
+              0.8,
+              11.5,
+              0.0
+            ],
+            [
+              -0.8,
+              11.5,
+              0.0
+            ],
+            [
+              -0.8,
+              9.5,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fire_f1",
+        "unit_id": "FIRE01",
+        "name": "Fire Exit F1",
+        "type": "FIRE_EXIT",
+        "floor": "F00-F03",
+        "space_class": "V",
+        "rights": "COM",
+        "ulpin_3d": "12345678901234-G00-V-COM-FIRE01-V01",
+        "ulpin_numeric": "123456789012340010091",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Community",
+        "carpet_area_sqm": 12.0,
+        "carpet_area_sqft": 129.0,
+        "z_min": 0.0,
+        "z_max": 12.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.8,
+              -11.5,
+              0.0
+            ],
+            [
+              0.8,
+              -11.5,
+              0.0
+            ],
+            [
+              0.8,
+              -9.5,
+              0.0
+            ],
+            [
+              -0.8,
+              -9.5,
+              0.0
+            ],
+            [
+              -0.8,
+              -11.5,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "park_1",
+        "unit_id": "PARK01",
+        "name": "Community Park",
+        "type": "PARK",
+        "floor": "G00",
+        "space_class": "S",
+        "rights": "COM",
+        "ulpin_3d": "12345678901234-G00-S-COM-PARK01-V01",
+        "ulpin_numeric": "123456789012340010092",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Community",
+        "carpet_area_sqm": 120.0,
+        "carpet_area_sqft": 1292.0,
+        "z_min": 0.0,
+        "z_max": 0.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -14.0,
+              -13.0,
+              0.0
+            ],
+            [
+              -9.0,
+              -13.0,
+              0.0
+            ],
+            [
+              -9.0,
+              13.0,
+              0.0
+            ],
+            [
+              -14.0,
+              13.0,
+              0.0
+            ],
+            [
+              -14.0,
+              -13.0,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lawn_1",
+        "unit_id": "LAWN01",
+        "name": "Community Lawn",
+        "type": "LAWN",
+        "floor": "G00",
+        "space_class": "S",
+        "rights": "COM",
+        "ulpin_3d": "12345678901234-G00-S-COM-LAWN01-V01",
+        "ulpin_numeric": "123456789012340010093",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Community",
+        "carpet_area_sqm": 110.0,
+        "carpet_area_sqft": 1184.0,
+        "z_min": 0.0,
+        "z_max": 0.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              9.0,
+              -13.0,
+              0.0
+            ],
+            [
+              14.0,
+              -13.0,
+              0.0
+            ],
+            [
+              14.0,
+              13.0,
+              0.0
+            ],
+            [
+              9.0,
+              13.0,
+              0.0
+            ],
+            [
+              9.0,
+              -13.0,
+              0.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cellar_1",
+        "unit_id": "CELLAR1",
+        "name": "Cellar C1",
+        "type": "CELLAR",
+        "floor": "B01",
+        "space_class": "U",
+        "rights": "COM",
+        "ulpin_3d": "12345678901234-B01-U-COM-CELLAR1-V01",
+        "ulpin_numeric": "123456789012340010094",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Community",
+        "carpet_area_sqm": 345.6,
+        "carpet_area_sqft": 3720.0,
+        "z_min": -3.0,
+        "z_max": 0.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -7.5,
+              -11.5,
+              -3.0
+            ],
+            [
+              7.5,
+              -11.5,
+              -3.0
+            ],
+            [
+              7.5,
+              11.5,
+              -3.0
+            ],
+            [
+              -7.5,
+              11.5,
+              -3.0
+            ],
+            [
+              -7.5,
+              -11.5,
+              -3.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "terrace_1",
+        "unit_id": "TERR01",
+        "name": "Terrace T1",
+        "type": "TERRACE",
+        "floor": "R00",
+        "space_class": "E",
+        "rights": "COM",
+        "ulpin_3d": "12345678901234-R00-E-COM-TERR01-V01",
+        "ulpin_numeric": "123456789012340019901",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Community",
+        "carpet_area_sqm": 364.8,
+        "carpet_area_sqft": 3926.7,
+        "z_min": 9.0,
+        "z_max": 12.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -7.8,
+              -11.8,
+              9.0
+            ],
+            [
+              7.8,
+              -11.8,
+              9.0
+            ],
+            [
+              7.8,
+              11.8,
+              9.0
+            ],
+            [
+              -7.8,
+              11.8,
+              9.0
+            ],
+            [
+              -7.8,
+              -11.8,
+              9.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "terrace_a",
+        "unit_id": "TR01",
+        "name": "Terrace TR01 (Unit 401 Claim)",
+        "type": "TERRACE",
+        "floor": "R00",
+        "space_class": "E",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-R00-E-PRV-TR01-V01",
+        "ulpin_numeric": "123456789012340019910",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner D (Ramesh Gowda)",
+        "carpet_area_sqm": 48.0,
+        "carpet_area_sqft": 516.0,
+        "z_min": 9.0,
+        "z_max": 12.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -7.5,
+              -3.0,
+              9.0
+            ],
+            [
+              0.5,
+              -3.0,
+              9.0
+            ],
+            [
+              0.5,
+              3.0,
+              9.0
+            ],
+            [
+              -7.5,
+              3.0,
+              9.0
+            ],
+            [
+              -7.5,
+              -3.0,
+              9.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "terrace_b",
+        "unit_id": "TR02",
+        "name": "Terrace TR02 (Unit 402 Claim)",
+        "type": "TERRACE",
+        "floor": "R00",
+        "space_class": "E",
+        "rights": "PRV",
+        "ulpin_3d": "12345678901234-R00-E-PRV-TR02-V01",
+        "ulpin_numeric": "123456789012340019911",
+        "parent_2d_ulpin": "12345678901234",
+        "owner": "Owner E (Suresh Patel)",
+        "carpet_area_sqm": 46.0,
+        "carpet_area_sqft": 495.0,
+        "z_min": 9.0,
+        "z_max": 12.0
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -0.8,
+              -3.0,
+              9.0
+            ],
+            [
+              7.5,
+              -3.0,
+              9.0
+            ],
+            [
+              7.5,
+              3.0,
+              9.0
+            ],
+            [
+              -0.8,
+              3.0,
+              9.0
+            ],
+            [
+              -0.8,
+              -3.0,
+              9.0
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

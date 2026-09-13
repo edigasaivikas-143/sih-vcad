@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200" style="background:#071426;">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#122847" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="1200" fill="url(#grid)" />
+  
+  <!-- Outer Walls (16m x 24m scaled) -->
+  <rect x="100" y="100" width="600" height="1000" fill="#0d2342" stroke="#00e5ff" stroke-width="6" />
+  
+  <!-- Central Corridor -->
+  <rect id="corridor" x="370" y="100" width="60" height="1000" fill="#0a1a33" stroke="#00e5ff" stroke-width="4" />
+  
+  <!-- Unit A Rooms (Left) -->
+  <rect id="A101_Living" x="100" y="100" width="270" height="350" fill="#112d54" stroke="#00e5ff" stroke-width="3" />
+  <rect id="A101_Bedroom" x="100" y="450" width="270" height="350" fill="#112d54" stroke="#00e5ff" stroke-width="3" />
+  <rect id="A101_Kitchen" x="100" y="800" width="270" height="300" fill="#112d54" stroke="#00e5ff" stroke-width="3" />
+  
+  <!-- Unit B Rooms (Right) -->
+  <rect id="A102_Living" x="430" y="100" width="270" height="350" fill="#112d54" stroke="#00e5ff" stroke-width="3" />
+  <rect id="A102_Bedroom" x="430" y="450" width="270" height="350" fill="#112d54" stroke="#00e5ff" stroke-width="3" />
+  <rect id="A102_Kitchen" x="430" y="800" width="270" height="300" fill="#112d54" stroke="#00e5ff" stroke-width="3" />
+  
+  <!-- Common Facilities -->
+  <rect id="STAIR1" x="375" y="130" width="50" height="180" fill="#2d3748" stroke="#ffd166" stroke-width="3" />
+  <rect id="FIRE01" x="375" y="900" width="50" height="160" fill="#2d3748" stroke="#ff5252" stroke-width="3" />
+  
+  <!-- Text Labels -->
+  <text x="140" y="270" fill="#ffffff" font-family="monospace" font-size="16" font-weight="bold">FLAT 101 (UNIT A)</text>
+  <text x="140" y="295" fill="#67e8f9" font-family="monospace" font-size="12">85.0 SQM | 3D-ULPIN: A101</text>
+  
+  <text x="470" y="270" fill="#ffffff" font-family="monospace" font-size="16" font-weight="bold">FLAT 102 (UNIT B)</text>
+  <text x="470" y="295" fill="#67e8f9" font-family="monospace" font-size="12">82.5 SQM | 3D-ULPIN: A102</text>
+
+  <text x="382" y="225" fill="#ffd166" font-family="monospace" font-size="12" transform="rotate(-90 382 225)">STAIRS S1</text>
+  <text x="382" y="990" fill="#ff5252" font-family="monospace" font-size="12" transform="rotate(-90 382 990)">FIRE EXIT</text>
+  
+  <text x="100" y="60" fill="#ffd166" font-family="monospace" font-size="14" font-weight="bold">PARENT 2D ULPIN: 12345678901234</text>
+</svg>

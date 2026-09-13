@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V-CAD: Automated 3D Model Generation & 3D ULPIN Engine | SIH 2026</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Local Offline-Ready High-Performance Three.js & OrbitControls -->
+  <script src="three.min.js"></script>
+  <script src="OrbitControls.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- TOP HEADER -->
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="logo-badge">V-CAD</div>
+        <div class="brand-text">
+          <h1>Automated 3D Model Generation & 3D ULPIN Engine</h1>
+          <span class="sih-tag">Smart India Hackathon • SVAMITVA 3D Cadastre • ISO 19152 LADM</span>
+        </div>
+      </div>
+
+      <!-- Parent 2D ULPIN Scope Header Display -->
+      <div class="parent-ulpin-box">
+        <span class="pulpin-label">Parent 2D ULPIN (Bhu-Aadhaar 14-Digit):</span>
+        <div class="pulpin-input-wrap">
+          <input type="text" id="parentUlpinInput" maxlength="14" value="12345678901234" spellcheck="false" title="14-digit parent 2D land parcel identifier">
+          <button id="updateParentBtn" title="Update Base Land Parcel ID">Update</button>
+        </div>
+      </div>
+
+      <!-- Header Controls & Presets -->
+      <div class="header-actions">
+        <select id="presetSelect" class="preset-dropdown" title="Choose a pre-loaded architectural blueprint">
+          <option value="Screenshot 2026-09-08 074503.png" selected>Blueprint: 2-Unit Apt with Central Stairs & Office (PNG)</option>
+          <option value="Screenshot 2026-09-08 074533.png">Blueprint: Residential House A-101 (150 sq.m PNG)</option>
+          <option value="user_test_blueprint.png">Blueprint: 1BHK Cottage Suite (24'x30' PNG)</option>
+          <option value="sample_floor_2unit.jpg">Sample 1: Multi-Unit Floor Plan (JPG)</option>
+          <option value="sample_blueprint.svg">Sample 2: Vector CAD Plan (SVG)</option>
+          <option value="sample_cadastre.json">Sample 3: Multi-Storey Cadastre (JSON)</option>
+        </select>
+
+        <button id="openUploadBtn" class="btn btn-accent btn-pulse" title="Upload JPG, JPEG, PNG, SVG, or JSON blueprint to generate 3D model">
+          <span class="btn-icon">⚡</span> <strong>Upload 2D Blueprint (Generate 3D)</strong>
+        </button>
+
+        <div class="export-dropdown-wrap">
+          <button id="exportDropdownBtn" class="btn btn-secondary">
+            <span class="btn-icon">⬇</span> Export ▾
+          </button>
+          <div id="exportMenu" class="dropdown-menu hidden">
+            <a href="#" id="exportObjBtn">Download 3D Model (.OBJ)</a>
+            <a href="#" id="exportGeoJsonBtn">Download 3D Cadastre (.GeoJSON)</a>
+            <a href="#" id="printDeedBtn">Print 3D Property Deed Certificate</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN APP LAYOUT (3-COLUMN: LEFT RECOMMENDATIONS, CENTER 3D VIEW, RIGHT PROPERTY CARD) -->
+    <main class="main-layout">
+      <!-- LEFT TAB: RECOMMENDATIONS & OWNER REGISTRY -->
+      <aside class="sidebar-left">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <div class="title-with-badge">
+              <h2>Recommendations & Registry</h2>
+              <span class="badge badge-accent" id="totalUnitsCount">Units</span>
+            </div>
+            <button id="collapseLeftBtn" class="collapse-toggle-btn" title="Collapse Left Sidebar">◀</button>
+          </div>
+          <p class="panel-sub">Select any unit to isolate in 3D & view its unique 3D ULPIN</p>
+        </div>
+
+        <!-- Primary Action: Upload 2D Blueprint -->
+        <div class="sidebar-upload-wrap">
+          <button id="leftUploadBtn" class="btn btn-accent full-width upload-hero-btn" title="Upload 2D blueprint to auto-generate 3D Cadastre model">
+            <span class="btn-icon">⚡</span> <strong>Upload 2D Blueprint (Auto-3D)</strong>
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-box">
+          <input type="text" id="unitSearchInput" placeholder="Search flat, owner, or 3D ULPIN..." autocomplete="off">
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <!-- Filter Categories -->
+        <div class="filter-tabs">
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="FLAT">Flats/Suites</button>
+          <button class="filter-pill" data-filter="ROOM">Rooms</button>
+          <button class="filter-pill" data-filter="COMMON">Public/Core</button>
+          <button class="filter-pill" data-filter="PARKING">Parking</button>
+        </div>
+
+        <!-- Recommendations Unit List -->
+        <div class="recommendations-list" id="recommendationsList">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+        <div class="format-hint">
+          <span class="hint-title">Official 3D ULPIN Schema:</span>
+          <code>[Parent]-[Z-Level]-[Class]-[Rights]-[UnitID]-[Version]</code>
+          <span class="hint-example">Sample: 12345678901234-F01-V-PRV-A101_LIV-V01</span>
+        </div>
+      </aside>
+
+      <!-- CENTER: 3D CAD VIEWER & CONTROLS -->
+      <section class="center-viewport">
+        <!-- 3D Viewport Controls Overlay -->
+        <div class="viewport-toolbar">
+          <!-- Floor-to-Floor Selector (Avoids text overlapping) -->
+          <div class="floor-selector-group" id="floorSelectorGroup">
+            <span class="group-label">Floor View:</span>
+            <button class="floor-btn active" data-floor="all" title="View all building tiers">All</button>
+            <button class="floor-btn" data-floor="F01" title="Floor 1 / Ground Floor">F01</button>
+            <button class="floor-btn" data-floor="R00" title="Rooftop Terrace Deck">R00</button>
+          </div>
+
+          <!-- Exploded View Slider -->
+          <div class="explode-slider-group">
+            <label for="explodeSlider" title="Lift floors vertically to inspect interior rooms">Exploded View:</label>
+            <input type="range" id="explodeSlider" min="0" max="100" value="0" step="1">
+            <span id="explodeVal" class="slider-badge">0m</span>
+          </div>
+
+          <!-- View Controls: 360 Spin, Zoom In/Out, Reset, Render Style -->
+          <div class="camera-controls-group">
+            <button id="spinBtn" class="icon-btn" title="Toggle continuous 360° rotation">↻ 360°</button>
+            <button id="toggleLabelsBtn" class="icon-btn" title="Toggle 3D Text Labels ON/OFF for clear architectural visuals">🏷️ Labels: ON</button>
+            <button id="zoomInBtn" class="icon-btn" title="Zoom in">+</button>
+            <button id="zoomOutBtn" class="icon-btn" title="Zoom out">-</button>
+            <button id="resetCamBtn" class="icon-btn" title="Reset camera to default isometric view">⌂</button>
+            
+            <button id="snapshotBtn" class="icon-btn" title="Save High-Resolution 3D Snapshot (PNG)">📸 Snapshot</button>
+            <button id="fullViewBtn" class="icon-btn" title="Toggle Full 3D Screen Mode">⛶ Full</button>
+            <button id="toolbarUploadBtn" class="icon-btn toolbar-upload-btn" title="Upload 2D Blueprint (JPG/PNG/SVG/JSON) to Auto-Generate 3D Model">⚡ Upload 2D</button>
+            <select id="renderModeSelect" class="mode-select" title="Toggle visual style">
+              <option value="cad">Clear CAD Shaded</option>
+              <option value="glass">X-Ray Glass</option>
+              <option value="wireframe">Wireframe</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Floating Drawer Expand Buttons (When sidebars are collapsed) -->
+        <button id="expandLeftBtn" class="floating-drawer-btn left-drawer-btn hidden" title="Show Recommendations Panel">▶ Registry</button>
+        <button id="expandRightBtn" class="floating-drawer-btn right-drawer-btn hidden" title="Show 3D Property Card">◀ Details</button>
+
+        <!-- Viewport Direct Drag-and-Drop Overlay -->
+        <div id="viewportDropOverlay" class="viewport-drop-overlay hidden">
+          <div class="drop-overlay-box">
+            <span class="drop-icon">📂</span>
+            <h3>Drop Blueprint Here to Auto-Generate 3D Model</h3>
+            <p>Release to run computer vision analysis & assign 3D ULPINs</p>
+            <span class="file-badges">JPG • JPEG • PNG • SVG • JSON</span>
+          </div>
+        </div>
+
+        <!-- 3D Canvas Viewport -->
+        <div class="canvas-container" id="canvasContainer">
+          <canvas id="cad3dCanvas"></canvas>
+          <!-- Dynamic 3D HTML Labels Overlay (Intelligently culled per floor to prevent text overlapping) -->
+          <div id="labelsOverlay" class="labels-overlay"></div>
+          
+          <!-- Dynamic 3D Viewport Notification Toast -->
+          <div id="canvasToast" class="canvas-toast hidden"></div>
+          
+          <!-- Cadastral True North Compass -->
+          <div class="cadastral-compass" id="cadastralCompass" title="Cadastral True North Indicator">
+            <div class="compass-dial" id="compassDial">
+              <span class="compass-n">N</span>
+              <div class="compass-pointer"></div>
+              <span class="compass-s">S</span>
+            </div>
+          </div>
+
+          <!-- Cadastral Metric Scale Bar -->
+          <div class="cadastral-scale-bar" title="Cadastral Scale (Meters)">
+            <span class="scale-label">10 METERS</span>
+            <div class="scale-ticks">
+              <span>0m</span>
+              <span>5m</span>
+              <span>10m</span>
+            </div>
+            <div class="scale-bar-line"></div>
+          </div>
+
+          <!-- Viewport HUD Info -->
+          <div class="viewport-hud" id="viewportHud">
+            <span id="hudStatus">Building Scope: 12345678901234 • 1 Floor</span>
+            <span id="hudFocus">Click any room or flat to inspect</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR: 3D PROPERTY CARD & TITLE VALIDATION -->
+      <aside class="sidebar-right">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <div class="title-with-badge">
+              <h2>3D Cadastre Property Card</h2>
+              <span class="badge badge-private" id="cardRightsBadge">PRV Title</span>
+            </div>
+            <button id="collapseRightBtn" class="collapse-toggle-btn" title="Collapse Property Card">▶</button>
+          </div>
+          <p class="panel-sub" id="cardSubtitle">Volumetric Land Record Details</p>
+        </div>
+
+        <!-- Unit Details Card -->
+        <div class="property-card" id="propertyCard">
+          <div class="card-hero">
+            <div class="card-unit-name" id="cardUnitName">Living Room</div>
+            <div class="card-unit-type" id="cardUnitType">ROOM • F01</div>
+          </div>
+
+          <!-- 3D ULPIN High-Visibility Badge -->
+          <div class="ulpin-hero-badge">
+            <div class="ulpin-label">Official 3D ULPIN (Bhu-Aadhaar 3D)</div>
+            <div class="ulpin-value" id="card3dUlpin">12345678901234-F01-V-PRV-A101_LIV-V01</div>
+            <button class="copy-btn" id="copyUlpinBtn" title="Copy 3D ULPIN">📋 Copy</button>
+          </div>
+
+          <!-- Detailed Specifications Table -->
+          <table class="specs-table">
+            <tbody>
+              <tr>
+                <td class="spec-lbl">Parent 2D ULPIN</td>
+                <td class="spec-val" id="cardParentUlpin">12345678901234</td>
+              </tr>
+              <tr>
+                <td class="spec-lbl">Numeric 21-Digit ULPIN</td>
+                <td class="spec-val" id="cardNumericUlpin">123456789012340010101</td>
+              </tr>
+              <tr>
+                <td class="spec-lbl">Floor / Elevation Tier</td>
+                <td class="spec-val" id="cardFloorLevel">F01 (Z = 0.0m to 2.8m)</td>
+              </tr>
+              <tr>
+                <td class="spec-lbl">Space Class</td>
+                <td class="spec-val" id="cardSpaceClass">V (Volumetric / Building)</td>
+              </tr>
+              <tr>
+                <td class="spec-lbl">Legal Rights</td>
+                <td class="spec-val" id="cardRights">PRV (Private Ownership Title)</td>
+              </tr>
+              <tr>
+                <td class="spec-lbl">Registered Owner</td>
+                <td class="spec-val font-bold" id="cardOwner">Owner A (Suresh Gowda)</td>
+              </tr>
+              <tr>
+                <td class="spec-lbl">Internal Usable Carpet</td>
+                <td class="spec-val font-bold" id="cardArea">26.4 m² (284 sq.ft)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Associated Facilities & Rights Graph -->
+          <div class="amenities-box">
+            <span class="amenities-title">Connected Spatial Rights:</span>
+            <div class="amenities-tags" id="amenitiesTags">
+              <span class="tag tag-priv">Parking: PRK01</span>
+              <span class="tag tag-comm">Central Stairs</span>
+              <span class="tag tag-comm">Rooftop Terrace T1</span>
+            </div>
+          </div>
+
+          <!-- SVAMITVA 3D Cadastre Certified Validation Badge -->
+          <div class="validation-status-box" id="validationStatusBox">
+            <div class="validation-header">
+              <span class="status-icon">✅</span>
+              <span class="status-title" id="validationTitle">SVAMITVA 3D Cadastre Validated</span>
+            </div>
+            <p class="validation-text" id="validationText">
+              Clean Title Record: Zero spatial volumetric clashes detected. All 3D boundaries strictly conform to ISO 19152 LADM & DILRMP standards.
+            </p>
+            <div class="validation-code" id="validationCode">
+              ST_3DIntersects(geom_a, geom_b) = 0 CLASHES • 100% CLEAN TITLE
+            </div>
+          </div>
+
+          <!-- Statutory Certificate Button -->
+          <button id="cardPrintCertificateBtn" class="btn btn-accent full-width">
+            📜 Generate 3D Property Deed Certificate
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- BLUEPRINT UPLOAD & ANALYSIS MODAL -->
+    <div id="uploadModal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Upload Blueprint & Auto-Generate 3D Model</h3>
+          <button id="closeUploadModal" class="close-btn">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <p class="modal-desc">
+            Upload any 2D architectural blueprint map (<strong>JPG, JPEG, PNG, SVG, or JSON</strong>). The computer vision engine will detect walls, segment private flats and rooms, assign deterministic 3D ULPINs, and build the exact 3D cadastre model.
+          </p>
+
+          <!-- Drag and drop zone -->
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.svg,.json,.geojson" class="file-input" title="Upload Blueprint File">
+            <div class="dropzone-content" id="dropzoneContent">
+              <span class="upload-icon">📤</span>
+              <p>Drag & Drop blueprint image or <strong style="color: var(--cyan); text-decoration: underline;">click to browse</strong></p>
+              <span class="file-types-tag">Supports JPG, JPEG, PNG, SVG, JSON</span>
+            </div>
+            <!-- Interactive File Selected Confirmation Card -->
+            <div id="fileSelectedBadge" class="file-selected-badge hidden">
+              <div class="file-badge-left">
+                <span class="file-badge-icon">✅</span>
+                <div class="file-badge-text">
+                  <span class="file-badge-title" id="selectedFileName">blueprint.png</span>
+                  <span class="file-badge-subtitle" id="selectedFileInfo">Ready for Computer Vision Analysis</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-secondary file-change-btn" id="changeFileBtn">Change</button>
+            </div>
+          </div>
+
+          <!-- Blueprint Settings (Strictly derived from Blueprint) -->
+          <div class="settings-grid single-col-grid">
+            <div class="setting-item">
+              <label for="uploadParentUlpin">Parent 2D ULPIN (Bhu-Aadhaar 14-Digit Land Parcel):</label>
+              <input type="text" id="uploadParentUlpin" value="12345678901234" maxlength="14" spellcheck="false">
+            </div>
+            <div class="setting-item">
+              <label for="uploadFloorNotes">Blueprint Text Notes / Multi-Storey Instructions (Optional):</label>
+              <input type="text" id="uploadFloorNotes" placeholder="e.g. 'Single Storey / Ground Floor only' or 'Typical Floor G+1' or '1st to 3rd Floors'">
+              <span class="setting-help">Single-floor blueprints render strictly only that floor + terrace. If blueprint text specifies multi-storey repetition (e.g. G+1), floors replicate strictly within the blueprint footprint.</span>
+            </div>
+          </div>
+
+          <!-- Vision Processing Live Preview -->
+          <div id="visionPreviewBox" class="vision-preview hidden">
+            <h4>Live Computer Vision Analysis:</h4>
+            <div class="preview-layout">
+              <canvas id="visionPreviewCanvas" width="360" height="240"></canvas>
+              <div class="vision-stats" id="visionStats">
+                <!-- Stats populated by app.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="cancelUploadBtn" class="btn btn-secondary">Cancel</button>
+          <button id="processBlueprintBtn" class="btn btn-primary" disabled>
+            ⚡ Generate 3D CAD Model & Assign 3D ULPINs
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OFFICIAL 3D PROPERTY DEED CERTIFICATE MODAL -->
+    <div id="certificateModal" class="modal-backdrop hidden">
+      <div class="modal-card deed-modal-card">
+        <div class="modal-header">
+          <h3>Government of India • SVAMITVA 3D Bhu-Aadhaar Certificate</h3>
+          <button id="closeDeedModal" class="close-btn">✕</button>
+        </div>
+
+        <div class="modal-body deed-printable" id="printableDeed">
+          <div class="deed-header">
+            <div class="emblem-text">
+              <span class="gov-title">DIGITAL INDIA LAND RECORDS MODERNIZATION PROGRAMME (DILRMP)</span>
+              <span class="deed-title">3D PROPERTY TITLE CERTIFICATE (BHU-AADHAAR 3D)</span>
+              <span class="deed-ref">ISO 19152 LADM / SVAMITVA 3D CADASTRE SPECIFICATION</span>
+            </div>
+            <div class="qr-mock" id="deedQrCode">
+              <!-- Rendered via SVG/Canvas -->
+            </div>
+          </div>
+
+          <div class="deed-divider"></div>
+
+          <div class="deed-section">
+            <h4>1. PRIMARY PARCEL & VERTICAL TITLE IDENTIFIERS</h4>
+            <table class="deed-table">
+              <tr>
+                <td style="width:30%;"><strong>Parent 2D ULPIN:</strong></td>
+                <td style="width:70%; font-family:monospace; font-weight:bold;" id="deedParentUlpin">12345678901234</td>
+              </tr>
+              <tr>
+                <td><strong>Official 3D ULPIN:</strong></td>
+                <td style="font-family:monospace; font-weight:bold; color:#1e3a8a;" id="deed3dUlpin">12345678901234-F01-V-PRV-A101_LIV-V01</td>
+              </tr>
+              <tr>
+                <td><strong>Numeric 3D Cadastre ID:</strong></td>
+                <td style="font-family:monospace;" id="deedNumericUlpin">123456789012340010101</td>
+              </tr>
+              <tr>
+                <td><strong>Spatial Unit & Building:</strong></td>
+                <td id="deedUnitName">Living Room • Block A</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="deed-section">
+            <h4>2. VERTICAL VOLUMETRIC EXTENT & CARPET AREA</h4>
+            <table class="deed-table">
+              <tr>
+                <td style="width:30%;"><strong>Vertical Tier:</strong></td>
+                <td style="width:70%;" id="deedVerticalTier">Floor 1 (F01)</td>
+              </tr>
+              <tr>
+                <td><strong>Elevation Bounds (Z):</strong></td>
+                <td id="deedElevation">Z_min: 0.00m | Z_max: 2.80m (Height: 2.80m)</td>
+              </tr>
+              <tr>
+                <td><strong>Usable Carpet Area:</strong></td>
+                <td id="deedCarpetArea">26.40 m² (284.2 sq.ft)</td>
+              </tr>
+              <tr>
+                <td><strong>Space Class & Rights:</strong></td>
+                <td id="deedSpaceRights">V (Volumetric Building) • PRV (Private Ownership)</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="deed-section">
+            <h4>3. OWNERSHIP & ASSOCIATED COMMON RIGHTS</h4>
+            <table class="deed-table">
+              <tr>
+                <td style="width:30%;"><strong>Registered Owner:</strong></td>
+                <td style="width:70%; font-weight:bold;" id="deedOwner">Owner A (Suresh Gowda)</td>
+              </tr>
+              <tr>
+                <td><strong>Associated Land/Parking:</strong></td>
+                <td id="deedAssociatedLand">Assigned Parking P01</td>
+              </tr>
+              <tr>
+                <td><strong>Common Facility Rights:</strong></td>
+                <td id="deedCommonRights">Central Stairs, Rooftop Terrace T1</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="deed-footer">
+            <div class="seal-block">
+              <span class="seal-tag">[OFFICIAL RECORD DIGITALLY VERIFIED]</span>
+              <p>Generated by V-CAD Automated 3D Cadastre Engine • SVAMITVA Scheme</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="closeDeedBtn" class="btn btn-secondary">Close</button>
+          <button id="executePrintBtn" class="btn btn-primary">🖨 Print Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="viewer3d.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

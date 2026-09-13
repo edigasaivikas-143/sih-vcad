@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#08101e"/>
+  <!-- 3D Cadastre Cube -->
+  <!-- Top Face -->
+  <polygon points="32,8 54,20 32,32 10,20" fill="#00f0ff" fill-opacity="0.85" stroke="#38bdf8" stroke-width="1.5"/>
+  <!-- Left Face -->
+  <polygon points="10,20 32,32 32,56 10,44" fill="#0369a1" fill-opacity="0.9" stroke="#38bdf8" stroke-width="1.5"/>
+  <!-- Right Face -->
+  <polygon points="32,32 54,20 54,44 32,56" fill="#0284c7" fill-opacity="0.9" stroke="#38bdf8" stroke-width="1.5"/>
+  <!-- 3D ULPIN Accent Marker -->
+  <circle cx="32" cy="32" r="3" fill="#ffd166"/>
+  <path d="M32,32 L32,18" stroke="#ffd166" stroke-width="1.5" stroke-dasharray="2,2"/>
+</svg>
