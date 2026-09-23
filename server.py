@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 V-CAD Enterprise Server Engine (SIH 2026 - SVAMITVA 3D Cadastre)
 Unified Production Server Supporting:
