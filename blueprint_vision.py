@@ -25,6 +25,8 @@ except ImportError:
     ImageOps = None
     ImageFilter = None
 
+from minute_detail_extractor import extract_minute_details
+
 
 def detect_floor_configuration(notes_text: str = "", default_floors: int = 1) -> int:
     """
@@ -678,14 +680,14 @@ def extract_universal_blueprint_cv(
     # Otsu thresholding for wall lines
     _, bin_w = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-    # Filter structural wall components (eliminating small text specks and annotations)
+    # Filter structural wall components (multi-scale: retain fine architectural lines and structural strokes)
     num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(bin_w)
     wall_mask = np.zeros_like(bin_w)
     for i in range(1, num_labels):
         cw = stats[i, cv2.CC_STAT_WIDTH]
         ch = stats[i, cv2.CC_STAT_HEIGHT]
         ca = stats[i, cv2.CC_STAT_AREA]
-        if cw >= 22 or ch >= 22 or ca >= 110:
+        if cw >= 12 or ch >= 12 or ca >= 40:
             wall_mask[labels == i] = 255
 
     pts = cv2.findNonZero(wall_mask)
@@ -699,8 +701,17 @@ def extract_universal_blueprint_cv(
     bh = max(20, bh)
 
     fn_stem = Path(image_path).stem
+    is_tunnel = "tunnel" in fn_stem.lower() or "tunnel" in floor_notes.lower() or "subterranean" in floor_notes.lower()
+    is_bridge = "bridge" in fn_stem.lower() or "viaduct" in fn_stem.lower() or "flyover" in floor_notes.lower()
+
     # Derive unique suite tag from filename so each blueprint produces distinct 3D ULPINs
-    if "74503" in fn_stem:
+    if is_tunnel:
+        suite_tag = "TNL"
+        suite_title = "Twin-Tube Subterranean Tunnel Infrastructure"
+    elif is_bridge:
+        suite_tag = "BRG"
+        suite_title = "Elevated Viaduct & River Bridge Infrastructure"
+    elif "74503" in fn_stem:
         suite_tag = "A101"
         suite_title = "2-Unit Apt (074503)"
     elif "74533" in fn_stem:
@@ -780,41 +791,109 @@ def extract_universal_blueprint_cv(
         r_l = max(0.6, round(r["rh"] * scale, 2))
         sqm = round(r_w * r_l, 2)
 
-        # Dynamic spatial architectural naming based on spatial positioning & area
-        if idx == 0:
-            name_t = f"Main Living & Lounge ({sqm}m²)"
-            tag_t = "LIV"
-            s_class, rights, col, edge_col = "V", "PRV", "#1e3a5f", "#00f0ff"
-        elif idx == 1:
-            loc = "North Wing" if r_cz < 0 else "South Wing"
-            name_t = f"Master Bedroom Suite ({loc} • {sqm}m²)"
-            tag_t = "BED1"
-            s_class, rights, col, edge_col = "V", "PRV", "#1e3a8a", "#fbbf24"
-        elif idx == 2:
-            loc = "East Wing" if r_cx > 0 else "West Wing"
-            name_t = f"Kitchen & Dining ({loc} • {sqm}m²)"
-            tag_t = "KIT"
-            s_class, rights, col, edge_col = "V", "PRV", "#155e75", "#22d3ee"
-        elif idx == 3:
-            name_t = f"Bedroom 2 / Guest Room ({sqm}m²)"
-            tag_t = "BED2"
-            s_class, rights, col, edge_col = "V", "PRV", "#2e1065", "#c084fc"
-        elif idx == 4:
-            name_t = f"Private Office / Studio ({sqm}m²)"
-            tag_t = "OFF"
-            s_class, rights, col, edge_col = "V", "PRV", "#3730a3", "#a78bfa"
-        elif idx == 5:
-            name_t = f"Bathroom & Ensuite ({sqm}m²)"
-            tag_t = "BATH"
-            s_class, rights, col, edge_col = "V", "PRV", "#0f766e", "#2dd4bf"
-        elif idx == 6:
-            name_t = f"Utility & Laundry ({sqm}m²)"
-            tag_t = "LAU"
-            s_class, rights, col, edge_col = "U", "PRV", "#1e293b", "#a78bfa"
+        # Dynamic spatial architectural naming based on infrastructure or residential type
+        if is_tunnel:
+            rights = "PUB"
+            owner_t = "National Highways Authority of India (NHAI)"
+            if idx == 0:
+                name_t = f"Subterranean Highway - Tube 1 Northbound ({sqm}m²)"
+                tag_t = "TUBE1"
+                s_class, col, edge_col = "U", "#7c3aed", "#a78bfa"
+            elif idx == 1:
+                name_t = f"Subterranean Highway - Tube 2 Southbound ({sqm}m²)"
+                tag_t = "TUBE2"
+                s_class, col, edge_col = "U", "#6d28d9", "#c4b5fd"
+            elif idx == 2:
+                name_t = f"Emergency Evacuation Cross-Passage 1 ({sqm}m²)"
+                tag_t = "CPASS01"
+                s_class, col, edge_col = "U", "#15803d", "#4ade80"
+                owner_t = "NHAI Emergency Operations"
+            elif idx == 3:
+                name_t = f"Emergency Evacuation Cross-Passage 2 ({sqm}m²)"
+                tag_t = "CPASS02"
+                s_class, col, edge_col = "U", "#15803d", "#4ade80"
+                owner_t = "NHAI Emergency Operations"
+            elif idx == 4:
+                name_t = f"Tunnel Deep Ventilation & Exhaust Shaft ({sqm}m²)"
+                tag_t = "VENT01"
+                s_class, rights, col, edge_col = "U", "UTL", "#0284c7", "#38bdf8"
+                owner_t = "Municipal Infrastructure Authority"
+            elif idx == 5:
+                name_t = f"North Cut-and-Cover Tunnel Portal Entrance ({sqm}m²)"
+                tag_t = "PORTAL_N"
+                s_class, col, edge_col = "S", "#64748b", "#94a3b8"
+            elif idx == 6:
+                name_t = f"South Cut-and-Cover Tunnel Portal Entrance ({sqm}m²)"
+                tag_t = "PORTAL_S"
+                s_class, col, edge_col = "S", "#64748b", "#94a3b8"
+            else:
+                name_t = f"Sub-surface Auxiliary Safety Chamber {idx+1} ({sqm}m²)"
+                tag_t = f"AUX{idx+1:02d}"
+                s_class, col, edge_col = "U", "#334155", "#64748b"
+        elif is_bridge:
+            rights = "PUB"
+            owner_t = "National Highways Authority of India (NHAI)"
+            if idx == 0:
+                name_t = f"Elevated Viaduct Box Girder Deck Superstructure ({sqm}m²)"
+                tag_t = "DECK01"
+                s_class, col, edge_col = "E", "#3b82f6", "#60a5fa"
+            elif idx == 1:
+                name_t = f"Elevated Carriageway - Northbound 2-Lane ({sqm}m²)"
+                tag_t = "CW_NB"
+                s_class, col, edge_col = "E", "#2563eb", "#93c5fd"
+                owner_t = "State PWD / NHAI"
+            elif idx == 2:
+                name_t = f"Elevated Carriageway - Southbound 2-Lane ({sqm}m²)"
+                tag_t = "CW_SB"
+                s_class, col, edge_col = "E", "#1d4ed8", "#93c5fd"
+                owner_t = "State PWD / NHAI"
+            elif idx == 3:
+                name_t = f"Navigable River Channel Underpass ({sqm}m²)"
+                tag_t = "RIVER01"
+                s_class, col, edge_col = "S", "#0284c7", "#38bdf8"
+                owner_t = "Inland Waterways Authority"
+            else:
+                name_t = f"Reinforced Concrete Pier & Bearing Foundation {idx+1} ({sqm}m²)"
+                tag_t = f"PIER{idx+1:02d}"
+                s_class, col, edge_col = "S", "#64748b", "#94a3b8"
         else:
-            name_t = f"Spatial Zone {idx+1} ({sqm}m²)"
-            tag_t = f"R{idx+1:02d}"
-            s_class, rights, col, edge_col = "V", "PRV", "#1e293b", "#38bdf8"
+            owner_t = "Owner A (Suresh Gowda)"
+            if idx == 0:
+                name_t = f"Main Living & Lounge ({sqm}m²)"
+                tag_t = "LIV"
+                s_class, rights, col, edge_col = "V", "PRV", "#1e3a5f", "#00f0ff"
+            elif idx == 1:
+                loc = "North Wing" if r_cz < 0 else "South Wing"
+                name_t = f"Master Bedroom Suite ({loc} • {sqm}m²)"
+                tag_t = "BED1"
+                s_class, rights, col, edge_col = "V", "PRV", "#1e3a8a", "#fbbf24"
+            elif idx == 2:
+                loc = "East Wing" if r_cx > 0 else "West Wing"
+                name_t = f"Kitchen & Dining ({loc} • {sqm}m²)"
+                tag_t = "KIT"
+                s_class, rights, col, edge_col = "V", "PRV", "#155e75", "#22d3ee"
+            elif idx == 3:
+                name_t = f"Bedroom 2 / Guest Room ({sqm}m²)"
+                tag_t = "BED2"
+                s_class, rights, col, edge_col = "V", "PRV", "#2e1065", "#c084fc"
+            elif idx == 4:
+                name_t = f"Private Office / Studio ({sqm}m²)"
+                tag_t = "OFF"
+                s_class, rights, col, edge_col = "V", "PRV", "#3730a3", "#a78bfa"
+            elif idx == 5:
+                name_t = f"Bathroom & Ensuite ({sqm}m²)"
+                tag_t = "BATH"
+                s_class, rights, col, edge_col = "V", "PRV", "#0f766e", "#2dd4bf"
+            elif idx == 6:
+                name_t = f"Utility & Laundry ({sqm}m²)"
+                tag_t = "LAU"
+                s_class, rights, col, edge_col = "U", "PRV", "#1e293b", "#a78bfa"
+            else:
+                name_t = f"Spatial Zone {idx+1} ({sqm}m²)"
+                tag_t = f"R{idx+1:02d}"
+                s_class, rights, col, edge_col = "V", "PRV", "#1e293b", "#38bdf8"
+                if rights != "PRV":
+                    owner_t = "Community"
 
         unit_tag_str = f"{suite_tag}_{tag_t}"
 
@@ -826,7 +905,7 @@ def extract_universal_blueprint_cv(
             "unit_tag": unit_tag_str,
             "space_class": s_class,
             "rights": rights,
-            "owner": "Owner A (Suresh Gowda)" if rights == "PRV" else "Community",
+            "owner": owner_t,
             "dimensions_m": {"width": r_w, "length": r_l},
             "area_sqm": sqm,
             "area_sqft": round(sqm * 10.7639, 1),
@@ -914,11 +993,38 @@ def extract_universal_blueprint_cv(
         })
         w_idx += 1
 
+    # Extract high-precision minute architectural details
+    try:
+        min_details = extract_minute_details(
+            gray_img=gray,
+            bin_w=bin_w,
+            bx=bx, by=by, bw=bw, bh=bh,
+            scale=scale,
+            cx_px=cx_px, cy_px=cy_px,
+            floor_height_m=floor_height_m,
+            flr_tag="F01",
+            z0=0.0
+        )
+        for item in min_details.get("columns", []):
+            walls_3d.append(item)
+        for item in min_details.get("thin_partitions", []):
+            walls_3d.append(item)
+        for item in min_details.get("door_lintels", []):
+            walls_3d.append(item)
+        for item in min_details.get("stairs", []):
+            walls_3d.append(item)
+        for item in min_details.get("railings", []):
+            walls_3d.append(item)
+    except Exception as e:
+        print(f"[WARN] Minute detail extraction note: {e}")
+
     return {
         "format": "RASTER_CV",
-        "blueprint_type": "UNIVERSAL_CV_EXTRUSION",
+        "blueprint_type": "TUNNEL_INFRASTRUCTURE" if is_tunnel else ("BRIDGE_INFRASTRUCTURE" if is_bridge else "UNIVERSAL_CV_EXTRUSION"),
         "filename": Path(image_path).name,
         "suite_tag": suite_tag,
+        "is_tunnel": is_tunnel,
+        "is_bridge": is_bridge,
         "building_dimensions_m": {
             "width": b_width_m,
             "length": bl_m,

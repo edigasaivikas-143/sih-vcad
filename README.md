@@ -1,115 +1,105 @@
 # V-CAD: Automated 2D Blueprint to 3D Cadastre Engine & 3D ULPIN Assignment
-### Smart India Hackathon (SIH 2026) • SVAMITVA / DILRMP 3D Geospatial Cadastre
+### Smart India Hackathon (SIH 2026) - SVAMITVA / DILRMP 3D Geospatial Cadastre
+
+**Repository**: [https://github.com/edigasaivikas-143/sih-vcad](https://github.com/edigasaivikas-143/sih-vcad)  
+**Live Render Deployment**: Deployable via 1-click on [Render.com](https://render.com) using render.yaml
 
 ---
 
-## ?? Executive Summary
-**V-CAD** is an autonomous computer vision and cadastral engine that transforms raw 2D floor plans, architectural blueprints (JPG, PNG, SVG, JSON), and cross-sections into **interactive, volumetrically verified 3D digital cadastres** with **official 14+ digit 3D ULPINs** (Unique Land Parcel Identification Numbers) aligned with India's DILRMP / SVAMITVA spatial standards.
+## Authorized Government Access Credentials
+
+| Role | Username | Password | Permissions |
+| :--- | :--- | :--- | :--- |
+| **Citizen (View-Only)** | user@ulpin.gov.in | user@1221 | Search properties, inspect verified records, view 3D cadastre |
+| **Cadastral Administrator (Full Access)** | admin@ulpin.gov.in | adm@4523 | Register/delete public domains, AI blueprint extrusion, deed issuance |
 
 ---
 
-## ?? Key Features
+## One-Click Deploy on Render
 
-1. **Autonomous Computer Vision Extrusion (OpenCV)**:
-   - Ingests raw floor plan images without manual CAD tracing.
-   - Detects outer perimeter walls, partition walls, doors, and functional zones (Living, Master Bedroom, Kitchen, Dining, Balcony, Terrace).
-   - Preserves metric building aspect ratio and calculates true carpet area (^2$ and .ft$).
+This repository includes a native render.yaml configuration for seamless deployment on Render:
 
-2. **Official 3D ULPIN Standard Generator**:
-   - Implements the official hierarchical standard:
-     [Parent 2D ULPIN]-[Vertical Floor Tier]-[Space Class]-[Rights Type]-[Unit ID]-[Version]
-   - Example: 12345678901234-F01-V-PRV-A101_LIV-V01
-   - Generates numeric cadastral identifiers (e.g. 123456789012340010101) for database indexing.
-
-3. **Multi-Floor & Blueprint Repetition**:
-   - Defaults strictly to 1 floor (+ clean terrace deck) for standard 2D floor plans.
-   - Intelligently detects text annotations in blueprints (e.g. *"Typical Floor Plan (1st to 3rd)"*) to clone floor geometries with distinct floor tags (F01, F02, F03) and unique room ULPINs.
-
-4. **Zero-Dispute Title Guarantee**:
-   - Real-time 3D volumetric collision detection eliminates duplicate unit allocations and spatial title overlaps.
-   - Clear distinction between Private Ownership Titles (PRV) and Common Public/Community Rights (COM).
-
-5. **High-Performance 3D WebGL Viewer (Three.js)**:
-   - Floor-by-floor inspection filter (All, F01, R00).
-   - Vertical exploded view slider (0m to 100m separation).
-   - Dynamic 3D HTML labels with automatic floor culling and toggle (ON/OFF).
-   - High-resolution snapshot export (PNG).
-
-6. **Interoperable Geospatial Export**:
-   - **Wavefront OBJ (.obj)**: Standard 3D model with mesh vertices, faces, and material definitions.
-   - **3D GeoJSON (.geojson)**: GIS-ready volumetric polygons with full cadastral properties.
-   - **Digital Legal Deed Certificate**: Printable deed with QR verification code, 3D ULPIN, and owner details.
+1. Connect the repository: https://github.com/edigasaivikas-143/sih-vcad
+2. Go to Render Dashboard (https://dashboard.render.com) -> New -> Blueprint.
+3. Connect the sih-vcad repository.
+4. Render will automatically detect render.yaml and configure:
+   - Environment: Python 3.11
+   - Build Command: pip install --upgrade pip && pip install -r requirements.txt
+   - Start Command: python server.py
+   - Health Check: /healthz
+5. Click Apply - your live 3D ULPIN engine will be up in 2 minutes with automatic HTTPS!
 
 ---
 
-## ?? Project Structure
+## Key Features
 
-`
-vcad_engine/
-¦
-+-- server.py               # Starlette + Uvicorn HTTP server & REST API endpoints
-+-- blueprint_vision.py     # OpenCV computer vision extractor & room classifier
-+-- cad_generator.py        # 3D geometry builder, OBJ exporter & GeoJSON generator
-+-- ulpin_engine.py         # 3D ULPIN generator (alphanumeric & numeric DILRMP standards)
-+-- test_suite.py           # Automated 11-point health check and validation suite
-¦
-+-- start_server.bat        # 1-click Windows startup script
-+-- run_tests.bat           # 1-click test runner script
-+-- requirements.txt        # Python dependency specifications
-¦
-+-- static/                 # Production WebGL Frontend
-¦   +-- index.html          # Responsive single-page application UI
-¦   +-- styles.css          # Cyberpunk / Cadastral GIS dark theme styling
-¦   +-- app.js              # Application controller & API integration
-¦   +-- viewer3d.js         # Three.js 3D viewport, orbit controls & labels
-¦   +-- favicon.svg         # High-resolution vector icon
-¦
-+-- sample_blueprints/      # Pre-packaged test floor plans & cadastre datasets
-+-- uploads/                # Dynamic storage for uploaded blueprints & exports
-`
+1. Multi-Elevation Cadastre & Specialized Infrastructure:
+   - Subterranean Tunnels: Space Class U (Underground Sub-surface, Z = -14.0m to -6.5m, Level B02), twin tubes, emergency cross-passages, deep ventilation shafts.
+   - Elevated Bridges & Viaducts: Space Class E (Elevated Air-rights, Z = +10.0m to +11.2m, Level F01), concrete piers and navigable river channels in Space Class S.
+   - Railway Tracks & Terminals: Grade-separated railway corridors, platform rights, signaling infrastructure.
+   - National Highway Corridors: Carriageway ROW, medians, service lanes, grade-separated flyovers.
+   - Monuments & Statues: Public airspace reservations, tourist plazas, municipal maintenance parcels.
+
+2. Official SVAMITVA / LADM 3D ULPIN Generator:
+   - Standard: [Parent 2D ULPIN]-[Vertical Floor Tier]-[Space Class]-[Rights Type]-[Unit ID]-[Version]
+   - Example (Tunnel): 28045678901240-B02-U-PUB-TNL_TUBE1-V01
+   - Example (Bridge): 28045678901239-F01-E-PUB-BRG_DECK01-V01
+   - Generates numeric cadastral identifiers (e.g. 280456789012400020201) for database indexing.
+
+3. Autonomous Computer Vision Extrusion (OpenCV):
+   - Reads raw architectural blueprints, CAD elevation drawings, and structural sections.
+   - Detects outer perimeters, structural elements, corridors, and functional zones.
+   - Preserves metric building aspect ratios and computes accurate carpet areas.
+
+4. Public Infrastructure Domain Registry:
+   - Filterable view dedicated to government sectors (Railways, Roads, Bridges, Tunnels, Statues, Govt Spaces).
+   - Administrator CRUD controls for registering and removing public infrastructure assets.
+
+5. Interactive 3D WebGL Multi-Floor & Layer Explorer:
+   - Built on Three.js with OrbitControls.
+   - Interactive unit selection with live Inspector modal showing area, volume, height, elevation range, owner, and tenure.
+   - Floor slicing and Category/Sector layer isolation filters.
+
+6. Interoperable Geospatial 3D Exports:
+   - Streams 3D Wavefront .obj files for AutoCAD, Blender, or BIM engines.
+   - Streams 3D .geojson files for QGIS, ArcGIS, or Mapbox.
 
 ---
 
-## ??? Quick Start Guide
+## Local Development & Setup
 
 ### 1. Requirements
-- Python 3.9 or higher
+- Python 3.9+ (Python 3.11 recommended)
 - Modern Web Browser (Chrome, Edge, Firefox, Brave)
 
 ### 2. Install Dependencies
-`ash
 pip install -r requirements.txt
-`
 
-### 3. Launch the Server
-Double-click **start_server.bat** OR run:
-`ash
+### 3. Launch Local Server
 python server.py 8080
-`
-Open your browser at:
-?? **http://localhost:8080**
 
-### 4. Run Automated Tests
-`ash
+Open your browser at: http://localhost:8080
+
+### 4. Run Automated Test Suite
 python test_suite.py
-`
-*(Runs 11 automated verification tests covering CV analysis, ULPIN creation, OBJ/GeoJSON exports, and API endpoints).*
 
 ---
 
-## ?? API Reference for Integration
+## API Reference
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| GET | /api/cadastre | Retrieves the active building cadastre model, geometry, and units. |
-| POST | /api/upload | Ingests a 2D blueprint (content_base64), executes CV extrusion, assigns 3D ULPINs, and returns full 3D cadastre. |
-| POST | /api/analyze-blueprint | Runs live computer vision analysis and returns detected room bounding boxes. |
-| POST | /api/set-parent-ulpin | Updates the 14-digit parent land parcel ULPIN and re-keys all 3D units. |
-| GET | /api/export/obj | Streams 3D Wavefront .obj file for AutoCAD, Blender, or GIS tools. |
-| GET | /api/export/geojson | Streams 3D GeoJSON file for QGIS, ArcGIS, or Mapbox. |
+| GET | /healthz | System health and daemon status probe. |
+| GET | /api/properties | Retrieves all registered 3D properties and infrastructure parcels. |
+| GET | /api/infrastructure/categories | Returns count and listing of all public infrastructure sectors. |
+| GET | /api/infrastructure/specialized/{category} | Returns 3D cadastre model for tunnels, bridges, railways, roads, or statues. |
+| POST | /api/vcad/process | Executes OpenCV blueprint analysis and returns extruded 3D cadastre. |
+| GET | /api/vcad/cadastre/{ulpin_3d} | Returns 3D spatial model for specific 3D ULPIN. |
+| GET | /api/export/obj | Streams 3D Wavefront .obj CAD geometry. |
+| GET | /api/export/geojson | Streams 3D GeoJSON spatial polygons. |
 
 ---
 
-## ?? Smart India Hackathon (SIH 2026) Notes
-- Compliant with **SVAMITVA Scheme Guidelines** and **DoLR Spatial Data Infrastructure standards**.
-- Fully autonomous processing pipeline: from raw photo/scan to legal 3D spatial register.
+## Smart India Hackathon (SIH 2026) Compliance
+- Built in alignment with SVAMITVA Scheme Guidelines, DoLR National Geospatial Policy, and LADM (ISO 19152) 3D spatial cadastre standards.
+- Designed and developed by Team V-CAD for SIH 2026.

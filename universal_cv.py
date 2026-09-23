@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Any, Optional
 import numpy as np
 import cv2
+from minute_detail_extractor import extract_minute_details
 
 def preprocess_blueprint_image(img: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -73,8 +74,8 @@ def extract_orthogonal_walls_and_rooms(
         cw = stats[i, cv2.CC_STAT_WIDTH]
         ch = stats[i, cv2.CC_STAT_HEIGHT]
         ca = stats[i, cv2.CC_STAT_AREA]
-        # Structural strokes are either long or have sufficient area
-        if cw >= 14 or ch >= 14 or ca >= 60:
+        # Multi-scale detection: retain minute strokes and thin wall partitions
+        if cw >= 8 or ch >= 8 or ca >= 25:
             wall_candidates[labels == i] = 255
 
     # Extract dominant horizontal and vertical strokes
@@ -166,6 +167,31 @@ def extract_orthogonal_walls_and_rooms(
             "color": "#1e293b", "edge_color": "#38bdf8"
         })
         w_idx += 1
+
+    # Extract fine minute architectural features (columns, thin partitions, door lintels, stairs, railings)
+    try:
+        min_det = extract_minute_details(
+            gray_img=bin_inv,
+            bin_w=bin_inv,
+            bx=bx, by=by, bw=bw, bh=bh,
+            scale=scale,
+            cx_px=cx_px, cy_px=cy_px,
+            floor_height_m=floor_height_m,
+            flr_tag="F01",
+            z0=0.0
+        )
+        for item in min_det.get("columns", []):
+            walls_3d.append(item)
+        for item in min_det.get("thin_partitions", []):
+            walls_3d.append(item)
+        for item in min_det.get("door_lintels", []):
+            walls_3d.append(item)
+        for item in min_det.get("stairs", []):
+            walls_3d.append(item)
+        for item in min_det.get("railings", []):
+            walls_3d.append(item)
+    except Exception as e:
+        print(f"[WARN] Universal CV minute detail extraction note: {e}")
 
     # Extract Room Floor Polygons
     # Close door openings by morphological dilation/closing

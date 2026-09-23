@@ -156,9 +156,29 @@ async def health_check(request):
 async def api_get_properties(request):
     props = load_properties()
     q = request.query_params.get("q", "").strip().lower()
+    scope = request.query_params.get("scope", "").strip().lower()
+    cat_param = request.query_params.get("category", "").strip().upper()
+
+    res = list(props.values())
+    if scope == "citizen":
+        res = [
+            p for p in res
+            if p.get("category") not in ("RAILWAY", "ROADS", "GOVT_SPACES", "MONUMENTS", "MASTER_TOWN", "PUBLIC_UTILITIES")
+            and p.get("rights") not in ("RLW", "GOV", "PUB")
+        ]
+    elif scope in ("govt", "infra", "infrastructure"):
+        res = [
+            p for p in res
+            if p.get("category") in ("RAILWAY", "ROADS", "GOVT_SPACES", "MONUMENTS", "MASTER_TOWN", "PUBLIC_UTILITIES")
+            or p.get("rights") in ("RLW", "GOV", "PUB")
+        ]
+
+    if cat_param:
+        res = [p for p in res if p.get("category", "").upper() == cat_param]
+
     if q:
         filtered = []
-        for p in props.values():
+        for p in res:
             if (q in p.get("parentULPIN", "").lower() or
                 q in p.get("threeDULPIN", "").lower() or
                 q in p.get("name", "").lower() or
@@ -169,7 +189,7 @@ async def api_get_properties(request):
                 q in p.get("floor", "").lower()):
                 filtered.append(p)
         return JSONResponse(filtered)
-    return JSONResponse(list(props.values()))
+    return JSONResponse(res)
 
 async def api_get_property_by_id(request):
     raw_query = request.path_params["ulpin_3d"].strip()
@@ -415,24 +435,450 @@ async def api_delete_blueprint(request):
     save_properties(props)
     return JSONResponse({"success": True, "remaining_blueprints": new_bps})
 
+# ---------------------------------------------------------------------------
+# Official Authorized Credentials
+# ---------------------------------------------------------------------------
+AUTHORIZED_USERS = {
+    "user@ulpin.gov.in": {
+        "password": "user@1221",
+        "role": "citizen",
+        "role_title": "Citizen (View-Only)",
+        "name": "Citizen User",
+        "token": "citizen-auth-token-1221"
+    },
+    "admin@ulpin.gov.in": {
+        "password": "adm@4523",
+        "role": "admin",
+        "role_title": "Cadastral Administrator (Full Access)",
+        "name": "Cadastral Administrator",
+        "token": "admin-auth-token-4523"
+    }
+}
+
 async def api_auth_login(request):
-    body = await request.json()
-    email = str(body.get("email", "")).strip()
-    password = str(body.get("password", ""))
-    if email and password:
-        return JSONResponse({
-            "success": True,
-            "role": "admin",
-            "token": "local-admin-auth-token",
-            "user": {"email": email, "role": "admin"}
-        })
-    return JSONResponse({"error": "Missing credentials"}, status_code=400)
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    email = str(body.get("email", "")).strip().lower()
+    password = str(body.get("password", "")).strip()
+    
+    if not email or not password:
+        return JSONResponse({"error": "Missing credentials. Please provide email and password."}, status_code=400)
+    
+    # Check officially authorized credentials
+    if email in AUTHORIZED_USERS:
+        auth_info = AUTHORIZED_USERS[email]
+        if password == auth_info["password"]:
+            return JSONResponse({
+                "success": True,
+                "role": auth_info["role"],
+                "role_title": auth_info["role_title"],
+                "token": auth_info["token"],
+                "user": {
+                    "email": email,
+                    "name": auth_info["name"],
+                    "role": auth_info["role"],
+                    "role_title": auth_info["role_title"]
+                }
+            })
+        else:
+            return JSONResponse({"error": "Incorrect password. Please verify your credentials."}, status_code=401)
+    
+    return JSONResponse({
+        "error": "Unauthorized credentials. Please use authorized credentials:\nCitizen (View-Only): user@ulpin.gov.in / user@1221\nCadastral Administrator: admin@ulpin.gov.in / adm@4523"
+    }, status_code=401)
+
+async def api_get_specialized_cadastre(request):
+    cat = request.path_params.get("category", "").strip().lower()
+    from infrastructure_cadastre import (
+        build_railway_cadastre, build_road_network_cadastre,
+        build_civic_monument_cadastre, build_govt_spaces_cadastre,
+        build_master_town_cadastre, build_bridge_infrastructure_cadastre,
+        build_tunnel_infrastructure_cadastre
+    )
+    if cat in ("railway", "railways", "station", "train", "tracks"):
+        _, payload = build_railway_cadastre()
+    elif cat in ("road", "roads", "highway", "traffic"):
+        _, payload = build_road_network_cadastre()
+    elif cat in ("bridge", "bridges", "viaduct", "flyover"):
+        _, payload = build_bridge_infrastructure_cadastre()
+    elif cat in ("tunnel", "tunnels", "subway", "subterranean"):
+        _, payload = build_tunnel_infrastructure_cadastre()
+    elif cat in ("statue", "statues", "monument", "monuments", "memorial"):
+        _, payload = build_civic_monument_cadastre()
+    elif cat in ("govt", "govt_spaces", "secretariat", "collectorate"):
+        _, payload = build_govt_spaces_cadastre()
+    elif cat in ("master", "town", "integrated", "all"):
+        _, payload = build_master_town_cadastre()
+    else:
+        _, payload = build_master_town_cadastre()
+    
+    CURRENT_CADASTRE_CACHE[cat] = payload
+    CURRENT_CADASTRE_CACHE["last"] = payload
+    return JSONResponse(payload)
+
+async def api_get_cadastre_categories(request):
+    return JSONResponse({
+        "categories": [
+            {
+                "id": "RAILWAY",
+                "label": "Railway Tracks & Stations",
+                "rights_code": "RLW",
+                "description": "Indian Railways broad-gauge tracks, platforms, Foot-Over-Bridges, and stations",
+                "parent_ulpin": "28045678901234",
+                "color": "#3b82f6"
+            },
+            {
+                "id": "ROADS",
+                "label": "Roads & Highway Networks",
+                "rights_code": "PUB",
+                "description": "Multi-lane arterial carriageways, median dividers, zebra crossings, and sidewalks",
+                "parent_ulpin": "28045678901235",
+                "color": "#475569"
+            },
+            {
+                "id": "BRIDGES",
+                "label": "Bridges & Elevated Viaducts",
+                "rights_code": "PUB",
+                "description": "Prestressed box girder elevated bridge decks, piers, abutments, and river channels",
+                "parent_ulpin": "28045678901239",
+                "color": "#0284c7"
+            },
+            {
+                "id": "TUNNELS",
+                "label": "Subterranean Tunnels & Metro Tubes",
+                "rights_code": "PUB",
+                "description": "Twin vaulted underground vehicular tunnels, emergency cross-passages, ventilation shafts, and cut-and-cover portals",
+                "parent_ulpin": "28045678901240",
+                "color": "#7c3aed"
+            },
+            {
+                "id": "GOVT_SPACES",
+                "label": "Government Administrative Spaces",
+                "rights_code": "GOV",
+                "description": "State Secretariats, District Collectorates, Citizen Seva Kendras, and Police Outposts",
+                "parent_ulpin": "28045678901236",
+                "color": "#1e3a8a"
+            },
+            {
+                "id": "MONUMENTS",
+                "label": "Statues & Civic Monuments",
+                "rights_code": "GOV",
+                "description": "Ceremonial stepped granite plinths, pedestals, bronze statues, memorial plazas, and flagmasts",
+                "parent_ulpin": "28045678901237",
+                "color": "#d97706"
+            },
+            {
+                "id": "BUILDINGS",
+                "label": "Private Housing & Commercial",
+                "rights_code": "PRV",
+                "description": "Multi-storey residential apartment suites, individual villas, and commercial properties",
+                "parent_ulpin": "12345678901234",
+                "color": "#059669"
+            },
+            {
+                "id": "COMMON_SPACES",
+                "label": "Common Amenities & Green Lawns",
+                "rights_code": "COM",
+                "description": "Community eco-parks, public landscaped gardens, and shared rooftop decks",
+                "parent_ulpin": "12345678901234",
+                "color": "#16a34a"
+            }
+        ]
+    })
+
+async def api_get_infrastructure_domains(request):
+    """Returns all public infrastructure and government property domains."""
+    props = load_properties()
+    infra_list = []
+    for k, v in props.items():
+        cat = v.get("category", "")
+        rights = v.get("rights", "")
+        is_infra = (
+            cat in ("RAILWAY", "ROADS", "BRIDGES", "TUNNELS", "GOVT_SPACES", "MONUMENTS", "PUBLIC_UTILITIES", "MASTER") or
+            rights in ("RLW", "GOV", "PUB", "UTL") or
+            any(kw in (v.get("name", "") + k).upper() for kw in ["RAIL", "STATION", "ROAD", "HIGHWAY", "BRIDGE", "VIADUCT", "FLYOVER", "TUNNEL", "SUBTERRANEAN", "SECRETARIAT", "STATUE", "MONUMENT", "MASTER", "28045678"])
+        )
+        if is_infra:
+            entry = dict(v)
+            entry["id"] = k
+            entry["threeDULPIN"] = v.get("threeDULPIN", k)
+            if not entry.get("category"):
+                nm = (entry.get("name", "") + k).upper()
+                if any(x in nm for x in ["RAIL", "STATION"]):
+                    entry["category"] = "RAILWAY"
+                elif any(x in nm for x in ["BRIDGE", "VIADUCT", "FLYOVER"]):
+                    entry["category"] = "BRIDGES"
+                elif any(x in nm for x in ["TUNNEL", "SUBTERRANEAN", "METRO"]):
+                    entry["category"] = "TUNNELS"
+                elif any(x in nm for x in ["ROAD", "HIGHWAY"]):
+                    entry["category"] = "ROADS"
+                elif any(x in nm for x in ["SECRETARIAT", "COLLECTORATE", "GOV"]):
+                    entry["category"] = "GOVT_SPACES"
+                elif any(x in nm for x in ["STATUE", "MONUMENT", "MEMORIAL"]):
+                    entry["category"] = "MONUMENTS"
+                else:
+                    entry["category"] = "GOVT_SPACES"
+            infra_list.append(entry)
+    return JSONResponse({"domains": infra_list, "total": len(infra_list)})
+
+async def api_add_infrastructure_domain(request):
+    """Registers a new government public infrastructure domain."""
+    auth_header = request.headers.get("Authorization", "")
+    data = await request.json()
+    role = data.get("role", "")
+    if role == "citizen" or "user@ulpin.gov.in" in auth_header:
+        return JSONResponse({"error": "Unauthorized: Citizen accounts are View-Only. Administrator credentials required to register government infrastructure domains."}, status_code=403)
+
+    name = str(data.get("name", "")).strip()
+    if not name:
+        return JSONResponse({"error": "Domain name is required."}, status_code=400)
+
+    category = str(data.get("category", "GOVT_SPACES")).strip().upper()
+    parent_ulpin = normalize_2d_ulpin(data.get("parent_ulpin", "28045678901238"))
+    
+    if category == "RAILWAY":
+        default_rights = "RLW"
+        space = "Surface / Tracks & Vertical Terminal"
+        default_floor = "Ground (G00)"
+        floor_code = "G00"
+        default_space_class = "S"
+    elif category == "ROADS":
+        default_rights = "PUB"
+        space = "Surface / Highway Carriageway"
+        default_floor = "Ground (G00)"
+        floor_code = "G00"
+        default_space_class = "S"
+    elif category == "BRIDGES":
+        default_rights = "PUB"
+        space = "Elevated Air-Rights (Space E) / Viaduct Deck & Piers"
+        default_floor = "Elevated Deck (F01)"
+        floor_code = "F01"
+        default_space_class = "E"
+    elif category == "TUNNELS":
+        default_rights = "PUB"
+        space = "Subterranean Under-Ground (Space U) / Twin Vault Tubes"
+        default_floor = "Subterranean Level (B02)"
+        floor_code = "B02"
+        default_space_class = "U"
+    elif category == "MONUMENTS":
+        default_rights = "GOV"
+        space = "Surface / Monument & Ceremonial Plaza"
+        default_floor = "Ground (G00)"
+        floor_code = "G00"
+        default_space_class = "S"
+    else:
+        default_rights = "GOV"
+        space = "Vertical / Administrative Headquarters"
+        default_floor = "Ground (G00)"
+        floor_code = "G00"
+        default_space_class = "V"
+
+    rights = str(data.get("rights", default_rights)).strip().upper()
+    unit_id = str(data.get("unit_id", "")).strip().upper()
+    if not unit_id:
+        slug = re.sub(r'[^A-Z0-9]', '', name)[:6].upper() or "INFRA"
+        unit_id = f"{slug}01"
+
+    three_d_ulpin = make_official_3d_ulpin(parent_ulpin, floor_code, default_space_class, rights, unit_id, "V01")
+    lat = float(data.get("lat", 16.5050))
+    lon = float(data.get("lon", 80.5220))
+    address = str(data.get("address", "Amaravathi Capital Region, Andhra Pradesh"))
+
+    from infrastructure_cadastre import (
+        build_railway_cadastre, build_road_network_cadastre,
+        build_civic_monument_cadastre, build_govt_spaces_cadastre,
+        build_master_town_cadastre, build_bridge_infrastructure_cadastre,
+        build_tunnel_infrastructure_cadastre
+    )
+    if category == "RAILWAY":
+        _, payload = build_railway_cadastre(parent_ulpin=parent_ulpin, station_name=name)
+    elif category == "ROADS":
+        _, payload = build_road_network_cadastre(parent_ulpin=parent_ulpin, road_name=name)
+    elif category == "BRIDGES":
+        _, payload = build_bridge_infrastructure_cadastre(parent_ulpin=parent_ulpin, bridge_name=name)
+    elif category == "TUNNELS":
+        _, payload = build_tunnel_infrastructure_cadastre(parent_ulpin=parent_ulpin, tunnel_name=name)
+    elif category == "MONUMENTS":
+        _, payload = build_civic_monument_cadastre(parent_ulpin=parent_ulpin, monument_name=name)
+    elif category == "MASTER":
+        _, payload = build_master_town_cadastre(parent_ulpin=parent_ulpin)
+    else:
+        _, payload = build_govt_spaces_cadastre(parent_ulpin=parent_ulpin, campus_name=name)
+
+    safe_slug = re.sub(r'[^A-Z0-9]', '_', three_d_ulpin)
+    (MODELS_DIR / f"{safe_slug}.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    CURRENT_CADASTRE_CACHE[three_d_ulpin] = payload
+
+    props = load_properties()
+    prop_entry = {
+        "parentULPIN": parent_ulpin,
+        "threeDULPIN": three_d_ulpin,
+        "name": name,
+        "category": category,
+        "space": space,
+        "floor": default_floor,
+        "zLevel": floor_code,
+        "zType": "B" if category == "TUNNELS" else ("F" if category == "BRIDGES" else "G"),
+        "zNumber": 2 if category == "TUNNELS" else (1 if category == "BRIDGES" else 0),
+        "buildingHeight": float(data.get("buildingHeight", 10.0 if category == "BRIDGES" else (3.5 if category == "TUNNELS" else 16.0))),
+        "buildingDepth": float(data.get("buildingDepth", 14.0 if category == "TUNNELS" else 2.0)),
+        "floorsCount": int(data.get("floorsCount", 4 if category == "GOVT_SPACES" else 1)),
+        "basementsCount": 2 if category == "TUNNELS" else 0,
+        "rights": rights,
+        "unitId": unit_id,
+        "version": "V01",
+        "area": str(data.get("area", "4500.0")),
+        "address": address,
+        "lat": lat,
+        "lon": lon,
+        "status": "Approved / Published",
+        "validation": "PASS - government infrastructure valid",
+        "blueprints": [],
+        "createdBy": "admin@ulpin.gov.in",
+        "updatedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    }
+    props[three_d_ulpin] = prop_entry
+    save_properties(props)
+
+    return JSONResponse({
+        "success": True,
+        "message": f"Successfully registered public infrastructure domain '{name}' with 3D ULPIN: {three_d_ulpin}",
+        "domain": prop_entry
+    }, status_code=201)
+
+async def api_delete_infrastructure_domain(request):
+    """Deletes an infrastructure domain from the registry."""
+    ulpin = request.path_params.get("ulpin_3d", "").strip().upper()
+    role = request.query_params.get("role", "")
+    if role == "citizen":
+        return JSONResponse({"error": "Unauthorized: Citizen accounts cannot delete government infrastructure records."}, status_code=403)
+
+    props = load_properties()
+    target_key = None
+    for k in props.keys():
+        if k.upper() == ulpin:
+            target_key = k
+            break
+
+    if not target_key:
+        return JSONResponse({"error": f"Infrastructure domain with 3D ULPIN '{ulpin}' not found."}, status_code=404)
+
+    del props[target_key]
+    save_properties(props)
+
+    safe_slug = re.sub(r'[^A-Z0-9]', '_', target_key)
+    m_path = MODELS_DIR / f"{safe_slug}.json"
+    if m_path.exists():
+        try:
+            m_path.unlink()
+        except Exception:
+            pass
+
+    CURRENT_CADASTRE_CACHE.pop(target_key, None)
+
+    return JSONResponse({
+        "success": True,
+        "message": f"Successfully deleted infrastructure domain '{target_key}'."
+    })
 
 async def api_vcad_cadastre(request):
     ulpin = request.path_params.get("ulpin_3d", "").strip().upper()
     safe_ulpin_slug = re.sub(r'[^A-Z0-9]', '_', ulpin) if ulpin else "default"
-    model_file = MODELS_DIR / f"{safe_ulpin_slug}.json"
 
+    # 1. Check if model file already exists on disk
+    model_file = MODELS_DIR / f"{safe_ulpin_slug}.json"
+    if model_file.exists():
+        try:
+            payload = json.loads(model_file.read_text(encoding="utf-8"))
+            geoms = payload.get("geometries", [])
+            if len(geoms) > 0:
+                CURRENT_CADASTRE_CACHE[ulpin] = payload
+                CURRENT_CADASTRE_CACHE["last"] = payload
+                return JSONResponse(payload)
+        except Exception as e:
+            print(f"[WARN] Error reading model file {model_file}: {e}")
+
+    # 2. Check if registered in properties registry
+    props = load_properties()
+    prop = props.get(ulpin)
+    if prop and prop.get("category") in ("RAILWAY", "ROADS", "BRIDGES", "TUNNELS", "GOVT_SPACES", "MONUMENTS", "MASTER"):
+        from infrastructure_cadastre import (
+            build_railway_cadastre, build_road_network_cadastre,
+            build_civic_monument_cadastre, build_govt_spaces_cadastre,
+            build_master_town_cadastre, build_bridge_infrastructure_cadastre,
+            build_tunnel_infrastructure_cadastre
+        )
+        p_parent = prop.get("parentULPIN", "28045678901234")
+        p_name = prop.get("name", "Infrastructure")
+        cat = prop.get("category")
+        if cat == "RAILWAY":
+            _, payload = build_railway_cadastre(parent_ulpin=p_parent, station_name=p_name)
+        elif cat == "ROADS":
+            _, payload = build_road_network_cadastre(parent_ulpin=p_parent, road_name=p_name)
+        elif cat == "BRIDGES":
+            _, payload = build_bridge_infrastructure_cadastre(parent_ulpin=p_parent, bridge_name=p_name)
+        elif cat == "TUNNELS":
+            _, payload = build_tunnel_infrastructure_cadastre(parent_ulpin=p_parent, tunnel_name=p_name)
+        elif cat == "MONUMENTS":
+            _, payload = build_civic_monument_cadastre(parent_ulpin=p_parent, monument_name=p_name)
+        elif cat == "MASTER":
+            _, payload = build_master_town_cadastre(parent_ulpin=p_parent)
+        else:
+            _, payload = build_govt_spaces_cadastre(parent_ulpin=p_parent, campus_name=p_name)
+
+        model_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+
+    # 3. Route specialized infrastructure cadastre requests by pattern fallback
+    u_upper = ulpin.upper()
+    if any(k in u_upper for k in ["RLW", "RAIL", "STATION", "TRK", "28045678901234"]):
+        from infrastructure_cadastre import build_railway_cadastre
+        _, payload = build_railway_cadastre(parent_ulpin="28045678901234")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+    elif any(k in u_upper for k in ["BRIDGE", "VIADUCT", "FLYOVER", "28045678901239"]):
+        from infrastructure_cadastre import build_bridge_infrastructure_cadastre
+        _, payload = build_bridge_infrastructure_cadastre(parent_ulpin="28045678901239")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+    elif any(k in u_upper for k in ["TUNNEL", "SUBTERRANEAN", "METRO", "28045678901240"]):
+        from infrastructure_cadastre import build_tunnel_infrastructure_cadastre
+        _, payload = build_tunnel_infrastructure_cadastre(parent_ulpin="28045678901240")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+    elif any(k in u_upper for k in ["PUB", "ROAD", "HIGHWAY", "28045678901235"]):
+        from infrastructure_cadastre import build_road_network_cadastre
+        _, payload = build_road_network_cadastre(parent_ulpin="28045678901235")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+    elif any(k in u_upper for k in ["STATUE", "MONUMENT", "MEMORIAL", "28045678901237"]):
+        from infrastructure_cadastre import build_civic_monument_cadastre
+        _, payload = build_civic_monument_cadastre(parent_ulpin="28045678901237")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+    elif any(k in u_upper for k in ["SEC", "GOV", "SECRETARIAT", "COLLECTORATE", "28045678901236"]):
+        from infrastructure_cadastre import build_govt_spaces_cadastre
+        _, payload = build_govt_spaces_cadastre(parent_ulpin="28045678901236")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+    elif any(k in u_upper for k in ["MASTER", "TOWN", "SMART_CITY", "28045678901000"]):
+        from infrastructure_cadastre import build_master_town_cadastre
+        _, payload = build_master_town_cadastre(parent_ulpin="28045678901000")
+        CURRENT_CADASTRE_CACHE[ulpin] = payload
+        CURRENT_CADASTRE_CACHE["last"] = payload
+        return JSONResponse(payload)
+
+    model_file = MODELS_DIR / f"{safe_ulpin_slug}.json"
     if model_file.exists():
         try:
             payload = json.loads(model_file.read_text(encoding="utf-8"))
@@ -575,16 +1021,37 @@ async def api_vcad_process(request):
                 primary_bp = str(f)
                 break
 
-    _, payload = build_multi_level_cadastre(
-        parent_ulpin=parent_ulpin,
-        building_name="Extruded Cadastre Building",
-        building_height=b_height,
-        floors_count=f_count,
-        building_depth=b_depth,
-        basements_count=b_count,
-        level_blueprints=resolved_map,
-        default_blueprint_path=primary_bp
-    )
+    if "tunnel" in req_filename.lower() or (primary_bp and "tunnel" in primary_bp.lower()):
+        from infrastructure_cadastre import build_tunnel_infrastructure_cadastre
+        _, payload = build_tunnel_infrastructure_cadastre(parent_ulpin=parent_ulpin, tunnel_name=f"Subterranean Twin-Tube Highway Tunnel ({parent_ulpin})")
+    elif "bridge" in req_filename.lower() or (primary_bp and "bridge" in primary_bp.lower()) or (primary_bp and "viaduct" in primary_bp.lower()):
+        from infrastructure_cadastre import build_bridge_infrastructure_cadastre
+        _, payload = build_bridge_infrastructure_cadastre(parent_ulpin=parent_ulpin, bridge_name=f"National River Viaduct & Flyover Corridor ({parent_ulpin})")
+    else:
+        _, payload = build_multi_level_cadastre(
+            parent_ulpin=parent_ulpin,
+            building_name="Extruded Cadastre Building",
+            building_height=b_height,
+            floors_count=f_count,
+            building_depth=b_depth,
+            basements_count=b_count,
+            level_blueprints=resolved_map,
+            default_blueprint_path=primary_bp
+        )
+    three_d_ulpin = str(data.get("three_d_ulpin", "")).strip().upper()
+    if not three_d_ulpin:
+        props = load_properties()
+        for p_id, p_val in props.items():
+            if p_val.get("parentULPIN") == parent_ulpin:
+                three_d_ulpin = p_id
+                break
+    if three_d_ulpin:
+        safe_slug = re.sub(r'[^A-Z0-9]', '_', three_d_ulpin)
+        (MODELS_DIR / f"{safe_slug}.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        CURRENT_CADASTRE_CACHE[three_d_ulpin] = payload
+    safe_parent = re.sub(r'[^A-Z0-9]', '_', parent_ulpin)
+    (MODELS_DIR / f"{safe_parent}.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    CURRENT_CADASTRE_CACHE[parent_ulpin] = payload
     CURRENT_CADASTRE_CACHE["last"] = payload
     return JSONResponse(payload)
 
@@ -840,6 +1307,14 @@ routes = [
     # VCAD Multi-Level & Stacking APIs
     Route("/api/vcad/cadastre", api_vcad_cadastre, methods=["GET"]),
     Route("/api/vcad/cadastre/{ulpin_3d}", api_vcad_cadastre, methods=["GET"]),
+    Route("/api/vcad/cadastre/specialized/{category}", api_get_specialized_cadastre, methods=["GET"]),
+    Route("/api/cadastre/specialized/{category}", api_get_specialized_cadastre, methods=["GET"]),
+    Route("/api/infrastructure/specialized/{category}", api_get_specialized_cadastre, methods=["GET"]),
+    Route("/api/cadastre/categories", api_get_cadastre_categories, methods=["GET"]),
+    Route("/api/infrastructure/categories", api_get_cadastre_categories, methods=["GET"]),
+    Route("/api/infrastructure/domains", api_get_infrastructure_domains, methods=["GET"]),
+    Route("/api/infrastructure/domains", api_add_infrastructure_domain, methods=["POST"]),
+    Route("/api/infrastructure/domains/{ulpin_3d}", api_delete_infrastructure_domain, methods=["DELETE"]),
     Route("/api/vcad/process", api_vcad_process, methods=["POST"]),
     Route("/api/vcad/export/obj", export_obj, methods=["GET"]),
     Route("/api/vcad/export/geojson", export_geojson, methods=["GET"]),

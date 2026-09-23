@@ -1,4 +1,4 @@
-﻿"""
+"""
 3D ULPIN Engine & Cadastre Registry Specification
 Compliant with SVAMITVA / DILRMP 3D Extension & ISO 19152 LADM Standard.
 
@@ -66,16 +66,17 @@ def make_numeric_3d_ulpin(
 class CadastreUnit:
     id: str
     name: str
-    type: str  # BUILDING, FLAT, PARKING, PLOT, STAIR, FIRE_EXIT, PARK, LAWN, CELLAR, TERRACE
+    type: str  # BUILDING, FLAT, PARKING, PLOT, STAIR, FIRE_EXIT, PARK, LAWN, CELLAR, TERRACE, RAILWAY_TRACK, PLATFORM, STATION, ROAD, STATUE, GOVT_OFFICE
     floor: str  # G00, F01, F02, F03, B01, R00, or F00-F03
     space_class: str  # V, S, U, E
-    rights: str  # PRV, COM, UTL, CML
-    unit_id: str  # e.g. A101, PRK01, STAIR1
+    rights: str  # PRV, COM, GOV, RLW, PUB, UTL, CML
+    unit_id: str  # e.g. A101, PRK01, TRK_UP, ROAD_M01, STATUE01, SEC01
     ulpin_3d: str  # Official format
     ulpin_numeric: str  # 21-digit format
     owner: str
     description: str
     parent_2d_ulpin: str
+    category: str = "BUILDINGS"  # RAILWAY, ROADS, GOVT_SPACES, MONUMENTS, BUILDINGS, COMMON_SPACES
     z_min: float = 0.0
     z_max: float = 3.0
     carpet_area_sqm: float = 0.0

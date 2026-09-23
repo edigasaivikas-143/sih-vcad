@@ -15,6 +15,15 @@ from ulpin_engine import (
     CadastreRegistry, CadastreUnit, make_official_3d_ulpin, make_numeric_3d_ulpin,
     normalize_2d_ulpin, DEFAULT_PARENT_ULPIN
 )
+from infrastructure_cadastre import (
+    build_railway_cadastre,
+    build_road_network_cadastre,
+    build_civic_monument_cadastre,
+    build_govt_spaces_cadastre,
+    build_master_town_cadastre,
+    build_bridge_infrastructure_cadastre,
+    build_tunnel_infrastructure_cadastre
+)
 
 def build_3d_cadastre_from_analysis(
     analysis_data: Dict[str, Any],
@@ -51,6 +60,12 @@ def build_3d_cadastre_from_analysis(
         actual_bldg_name = f"Cadastre Building ({stem})"
     else:
         actual_bldg_name = building_name
+
+    # Check for specialized infrastructure blueprints (Subterranean Tunnels / Elevated Bridges)
+    if analysis_data.get("is_tunnel") or "tunnel" in fn.lower() or b_type == "TUNNEL_INFRASTRUCTURE":
+        return build_tunnel_infrastructure_cadastre(parent_ulpin=p, tunnel_name=f"Subterranean Twin-Tube Highway Tunnel ({p})")
+    if analysis_data.get("is_bridge") or "bridge" in fn.lower() or "viaduct" in fn.lower() or b_type == "BRIDGE_INFRASTRUCTURE":
+        return build_bridge_infrastructure_cadastre(parent_ulpin=p, bridge_name=f"National River Viaduct Corridor ({p})")
 
     # 1. Add Parent Building Unit
     bldg = CadastreUnit(
@@ -571,9 +586,12 @@ def build_multi_level_cadastre(
     def get_analysis_for(level_key: str):
         # Explicit level blueprint always takes priority
         bp_path = level_bps.get(level_key)
-        # Only fall back to default blueprint if replicate_upper_floors is True and it's an above-ground floor
-        if not bp_path and replicate_upper_floors and level_key.startswith("f"):
-            bp_path = default_blueprint_path or level_bps.get("f1")
+        # Fall back to default blueprint for f1/ground or if replicate_upper_floors is True for upper floors
+        if not bp_path:
+            if level_key in ("f1", "g00"):
+                bp_path = default_blueprint_path
+            elif replicate_upper_floors and level_key.startswith("f"):
+                bp_path = default_blueprint_path or level_bps.get("f1")
 
         if bp_path and Path(bp_path).exists():
             resolved = str(Path(bp_path).resolve())

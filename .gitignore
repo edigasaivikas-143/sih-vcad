@@ -5,3 +5,16 @@ __pycache__/
 logs/
 .tempmediaStorage/
 .user_uploaded/
+scratch/
+uploads/
+*.zip
+.firebaserc
+deploy_firebase.bat
+deploy_firebase.ps1
+deploy_cloud_run.bat
+firebase.json
+scratch_icon.png
+scratch_pipe_test.mp4
+scratch_test_audio.wav
+scratch_test_frame.png
+extracted_app_12_sep/

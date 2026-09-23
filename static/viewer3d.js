@@ -29,6 +29,8 @@ class Vcad3DViewer {
     this.labelElements = new Map(); // id -> DOM HTMLElement
 
     this.activeFloor = 'all';
+    this.activeCategory = 'all';
+    this.isolateCategory = true;
     this.explodeFactor = 0.0;
     this.autoSpin = false;
     this.showLabels = true;
@@ -37,17 +39,23 @@ class Vcad3DViewer {
 
     this.isAnimatingFocus = false;
     this.focusTarget = new THREE.Vector3(0, 4, 0);
+    this.animationFrameId = null;
+    this.lastPayload = null;
 
     this.init();
   }
 
   init() {
+    if (!this.canvas) return;
+    this.canvas.style.backgroundColor = '#060c18';
+    this.canvas.style.display = 'block';
+
     this.container = this.canvas.parentElement || document.getElementById('canvasContainer');
     let width = this.container ? this.container.clientWidth : 0;
     let height = this.container ? this.container.clientHeight : 0;
     if (width <= 50 || height <= 50) {
-      width = Math.max(400, window.innerWidth - 660);
-      height = Math.max(400, window.innerHeight - 58);
+      width = Math.max(400, window.innerWidth - 420);
+      height = Math.max(400, window.innerHeight - 80);
     }
 
     // 1. Scene setup
@@ -61,18 +69,62 @@ class Vcad3DViewer {
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     this.camera.position.set(24, 22, 32);
 
-    // 3. Renderer setup
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
-      antialias: true,
-      alpha: false,
-      preserveDrawingBuffer: true,
-      powerPreference: 'high-performance'
-    });
+    // 3. Resilient Renderer setup with automatic fallback & WebGL context loss recovery
+    if (this.renderer) {
+      try { this.renderer.dispose(); } catch(e){}
+      this.renderer = null;
+    }
+
+    try {
+      this.renderer = new THREE.WebGLRenderer({
+        canvas: this.canvas,
+        antialias: true,
+        alpha: false,
+        powerPreference: 'default',
+        preserveDrawingBuffer: false,
+        failIfMajorPerformanceCaveat: false
+      });
+    } catch (e1) {
+      console.warn('High-fidelity WebGL failed, retrying with low-power profile...', e1);
+      try {
+        this.renderer = new THREE.WebGLRenderer({
+          canvas: this.canvas,
+          antialias: false,
+          alpha: false,
+          powerPreference: 'low-power',
+          preserveDrawingBuffer: false
+        });
+      } catch (e2) {
+        console.error('Fatal WebGL initialization error:', e2);
+        if (this.overlay) {
+          this.overlay.innerHTML = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#00f0ff;text-align:center;background:rgba(10,20,38,.92);padding:24px;border:1px solid #2b3857;border-radius:8px;max-width:400px"><h3 style="margin:0 0 8px;color:#ffd166">WebGL Graphics Notice</h3><p style="font-size:12px;color:#cbd5e1;line-height:1.5">Your browser hardware acceleration is currently disabled or limited. Enable hardware acceleration in browser settings for 3D model visualization.</p></div>';
+        }
+        return;
+      }
+    }
+
     this.renderer.setSize(width, height, false);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // WebGL Context Lost / Restored event handling
+    this.canvas.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      console.warn('WebGL context lost. Preserving canvas state...');
+      if (this.animationFrameId) {
+        cancelAnimationFrame(this.animationFrameId);
+        this.animationFrameId = null;
+      }
+    }, false);
+
+    this.canvas.addEventListener('webglcontextrestored', () => {
+      console.log('WebGL context restored. Re-initializing viewer scene...');
+      this.init();
+      if (this.lastPayload) {
+        this.loadModelData(this.lastPayload);
+      }
+    }, false);
 
     // 4. OrbitControls
     if (typeof THREE.OrbitControls !== 'undefined') {
@@ -86,14 +138,14 @@ class Vcad3DViewer {
     }
 
     // 5. Architectural Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     this.scene.add(ambientLight);
 
     const dirLight1 = new THREE.DirectionalLight(0xe0f2fe, 0.9);
     dirLight1.position.set(30, 45, 25);
     dirLight1.castShadow = true;
-    dirLight1.shadow.mapSize.width = 2048;
-    dirLight1.shadow.mapSize.height = 2048;
+    dirLight1.shadow.mapSize.width = 1024;
+    dirLight1.shadow.mapSize.height = 1024;
     this.scene.add(dirLight1);
 
     const dirLight2 = new THREE.DirectionalLight(0x38bdf8, 0.4);
@@ -130,9 +182,23 @@ class Vcad3DViewer {
   }
 
   loadModelData(payload) {
-    // Clear old scene meshes
-    this.meshMap.forEach(mesh => this.scene.remove(mesh));
-    this.edgeMap.forEach(edge => this.scene.remove(edge));
+    if (!payload) return;
+    this.lastPayload = payload;
+
+    // Clear old scene meshes and dispose geometries & materials to prevent memory leaks
+    this.meshMap.forEach(mesh => {
+      if (mesh.geometry) mesh.geometry.dispose();
+      if (mesh.material) {
+        if (Array.isArray(mesh.material)) mesh.material.forEach(m => m.dispose());
+        else mesh.material.dispose();
+      }
+      this.scene.remove(mesh);
+    });
+    this.edgeMap.forEach(edge => {
+      if (edge.geometry) edge.geometry.dispose();
+      if (edge.material) edge.material.dispose();
+      this.scene.remove(edge);
+    });
     this.meshMap.clear();
     this.edgeMap.clear();
     this.unitDataMap.clear();
@@ -198,7 +264,7 @@ class Vcad3DViewer {
       mesh.position.set(g.cx, g.cy, g.cz);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
-      mesh.userData = { id: g.id, baseCy: g.cy, floor: g.floor, data: g };
+      mesh.userData = { id: g.id, baseCy: g.cy, floor: g.floor, category: g.category || 'BUILDINGS', data: g };
 
       // Crisp CAD Edge Lines
       const edgeMat = new THREE.LineBasicMaterial({
@@ -209,7 +275,7 @@ class Vcad3DViewer {
       });
       const edgeLines = new THREE.LineSegments(edges, edgeMat);
       edgeLines.position.copy(mesh.position);
-      edgeLines.userData = { id: g.id, baseCy: g.cy, floor: g.floor };
+      edgeLines.userData = { id: g.id, baseCy: g.cy, floor: g.floor, category: g.category || 'BUILDINGS' };
 
       this.scene.add(mesh);
       this.scene.add(edgeLines);
@@ -282,14 +348,31 @@ class Vcad3DViewer {
     this.labelElements.set(g.id, el);
   }
 
+  setCategory(catCode) {
+    this.activeCategory = catCode || 'all';
+    this.applyFilters();
+    this.fitCameraToScene();
+  }
+
+  toggleIsolateCategory() {
+    this.isolateCategory = !this.isolateCategory;
+    this.applyFilters();
+    return this.isolateCategory;
+  }
+
   setFloor(floorCode) {
     this.activeFloor = floorCode;
-    this.applyFloorFilter();
+    this.applyFilters();
     this.fitCameraToScene();
   }
 
   applyFloorFilter() {
-    const isAll = this.activeFloor === 'all';
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    const isAllFloor = this.activeFloor === 'all';
+    const isAllCat = this.activeCategory === 'all';
 
     this.meshMap.forEach((mesh, id) => {
       const g = this.unitDataMap.get(id);
@@ -297,27 +380,27 @@ class Vcad3DViewer {
       if (!g) return;
 
       const isLand = g.floor === 'LAND';
-      const match = isAll || (isLand ? this.activeFloor === 'LAND' : g.floor === this.activeFloor);
+      const floorMatch = isAllFloor || (isLand ? this.activeFloor === 'LAND' : g.floor === this.activeFloor);
+      const cat = g.category || 'BUILDINGS';
+      const catMatch = isAllCat || cat === this.activeCategory;
 
-      if (match) {
+      if (floorMatch && catMatch) {
         mesh.visible = true;
         if (edge) edge.visible = true;
-        mesh.material.opacity = g.opacity || 0.85;
+        mesh.material.opacity = g.opacity || 0.88;
         mesh.material.transparent = true;
-      } else {
-        if (this.renderStyle === 'wireframe') {
-          mesh.visible = false;
-          if (edge) {
-            edge.visible = true;
-            edge.material.opacity = 0.15;
-          }
-        } else {
-          // Dim non-selected floors to subtle ghost wireframe to give spatial context without clutter
-          mesh.visible = false;
-          if (edge) {
-            edge.visible = isAll ? true : false;
-          }
+      } else if (floorMatch && !catMatch && !this.isolateCategory) {
+        // Ghost outline context mode
+        mesh.visible = true;
+        mesh.material.opacity = 0.08;
+        mesh.material.transparent = true;
+        if (edge) {
+          edge.visible = true;
+          edge.material.opacity = 0.15;
         }
+      } else {
+        mesh.visible = false;
+        if (edge) edge.visible = false;
       }
     });
 

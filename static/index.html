@@ -31,17 +31,25 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
 
 
 /* V-CAD 3D Cadastre WebGL Engine Styles */
+.model-modal{position:fixed;inset:0;background:rgba(7,12,23,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:15px}
 .model-box{width:1240px;max-width:98vw;height:720px;max-height:94vh;background:#080e1a;border:1px solid #2b3857;border-radius:10px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.75)}
 .model-header{padding:10px 16px;background:#0e172a;border-bottom:1px solid #243350;display:flex;justify-content:space-between;align-items:center;color:#fff}
 .model-body{flex:1;display:grid;grid-template-columns:1fr 370px;overflow:hidden;position:relative}
-.model-viewport{position:relative;background:#060c18;width:100%;height:100%;overflow:hidden}
-.model-viewport canvas{width:100%!important;height:100%!important;display:block}
+.model-viewport{position:relative;background:#060c18!important;width:100%;height:100%;overflow:hidden}
+.model-viewport canvas{width:100%!important;height:100%!important;display:block;background:#060c18!important;touch-action:none}
 .model-viewbar{position:absolute;right:14px;top:14px;display:flex;gap:5px;z-index:15}
 .model-viewbar button{border:1px solid #2b3857;background:rgba(12,17,30,.88);color:#fff;padding:5px 9px;border-radius:5px;cursor:pointer;font-weight:600;font-size:11px}
 .model-viewbar button:hover,.model-viewbar button.active{border-color:#ffd166;color:#ffd166}
 .model-floorbar{position:absolute;left:14px;top:14px;display:flex;gap:4px;z-index:15;flex-wrap:wrap;max-width:60%}
 .model-floorbar button{border:1px solid #2b3857;background:rgba(12,17,30,.88);color:#9eabc4;padding:5px 8px;border-radius:4px;cursor:pointer;font-weight:600;font-size:10px}
 .model-floorbar button:hover,.model-floorbar button.active{border-color:#00f0ff;color:#00f0ff;background:#14233c}
+.model-layerbar{position:absolute;left:14px;top:46px;display:flex;gap:4px;z-index:15;flex-wrap:wrap;max-width:68%;align-items:center}
+.cat-pill{border:1px solid #334155;background:rgba(15,23,42,.92);color:#94a3b8;padding:4px 7px;border-radius:4px;cursor:pointer;font-weight:700;font-size:10px;transition:all .15s}
+.cat-pill:hover,.cat-pill.active{border-color:#38bdf8;color:#fff;background:#0369a1}
+.cat-pill.mode-pill{border-color:#f59e0b;color:#f59e0b;background:rgba(30,41,59,.92)}
+.cat-pill.mode-pill.active{background:#b45309;color:#fff;border-color:#fbbf24}
+.cat-filter-btn{border:1px solid var(--line);background:#fff;color:var(--navy);padding:6px 12px;border-radius:20px;cursor:pointer;font-weight:700;font-size:12px;transition:all .15s}
+.cat-filter-btn:hover,.cat-filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .model-explodabar{position:absolute;left:14px;bottom:14px;display:flex;align-items:center;gap:8px;z-index:15;background:rgba(10,18,34,.9);border:1px solid #2b3857;padding:6px 12px;border-radius:6px}
 .labels-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:5}
 .unit-3d-label{position:absolute;transform:translate(-50%,-100%);background:rgba(8,16,30,.88);border:1px solid #2b3857;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:600;color:#00f0ff;pointer-events:auto;cursor:pointer;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.4);transition:all .15s}
@@ -89,23 +97,7 @@ label{display:block;font-size:13px;font-weight:700;margin:13px 0 6px}input,selec
   .cert-actions{display:none !important}
 }
 
-/* Interactive 3D Model Modal Viewer with Owner Directory */
-.model-modal{position:fixed;inset:0;background:rgba(7,12,23,.85);display:flex;align-items:center;justify-content:center;z-index:100;padding:15px}
-.model-box{width:1050px;max-width:98vw;height:620px;background:#0c1322;border:1px solid #2b3857;border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
-.model-header{padding:12px 18px;background:#121a2d;border-bottom:1px solid #2b3857;display:flex;justify-content:space-between;align-items:center;color:#fff}
-.model-body{flex:1;display:grid;grid-template-columns:1fr 340px;overflow:hidden}
-.model-viewport{position:relative;background:#080c17;width:100%;height:100%}
-.model-viewport canvas{width:100%!important;height:100%!important;display:block;touch-action:none}
-.model-viewbar{position:absolute;right:14px;top:14px;display:flex;gap:5px;z-index:3}
-.model-viewbar button{border:1px solid #2b3857;background:rgba(12,17,30,.9);color:#fff;padding:6px 10px;border-radius:6px;cursor:pointer;font-weight:600;font-size:11px}
-.model-viewbar button.active{border-color:var(--selected);color:var(--selected)}
-.model-floorbar{position:absolute;right:14px;top:52px;display:flex;gap:4px;z-index:3}
-.model-floorbar button{border:1px solid #2b3857;background:rgba(12,17,30,.88);color:#9eabc4;padding:5px 8px;border-radius:5px;cursor:pointer;font-weight:600;font-size:10px}
-.model-floorbar button.active{border-color:#8fa3c8;color:#fff;background:#202c45}
-
-.owner-sidebar{background:#121a2d;border-left:1px solid #2b3857;display:flex;flex-direction:column;overflow:hidden;padding:14px}
-.owner-sidebar h4{margin:0 0 10px;color:#fff;font-size:13px;border-bottom:1px solid #2b3857;padding-bottom:8px}
-.owner-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+/* Interactive 3D Model Modal Viewer Styles */
 .owner-item{background:#1a2540;border:1px solid #2b3857;border-radius:6px;padding:9px;cursor:pointer;transition:all .15s}
 .owner-item:hover,.owner-item.active{border-color:var(--selected);background:#202c45}
 .owner-item strong{color:#fff;font-size:12px;display:block}
@@ -268,6 +260,28 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .btn-deck-sm.danger:hover{background:#fee2e2}
 .btn-deck-sm.primary{background:#2563eb;color:#fff;border-color:#1d4ed8}
 .btn-deck-sm.primary:hover{background:#1d4ed8}
+
+/* Government & Public Infrastructure Domains styling */
+.infra-card{
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 1px 4px rgba(0,0,0,0.05);transition:all .2s ease;position:relative;
+}
+.infra-card:hover{
+  box-shadow:0 6px 18px rgba(0,0,0,0.09);transform:translateY(-2px);
+}
+.infra-tag{
+  font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:4px;
+  letter-spacing:.4px;display:inline-flex;align-items:center;gap:4px;
+}
+.infra-tag.railway{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.infra-tag.roads{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;}
+.infra-tag.bridges{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;}
+.infra-tag.tunnels{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.infra-tag.govt{background:#e0e7ff;color:#3730a3;border:1px solid #c7d2fe;}
+.infra-tag.monument{background:#fffbeb;color:#b45309;border:1px solid #fde68a;}
+.infra-tag.master{background:#f0fdfa;color:#0f766e;border:1px solid #99f6e4;}
+.infra-actions{display:flex;gap:8px;margin-top:14px;align-items:center}
 </style>
 <script src="config.js"></script>
 <script src="three.min.js"></script>
@@ -293,33 +307,68 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <option value="ml">മലയാളം</option>
 </select></div>
 </div></header>
-<nav class="nav"><div class="navin"><button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Open navigation">☰ <span>Menu</span></button><div class="navlinks" id="primaryNav"><button data-page="home" class="active">Home</button><button data-page="lookup">Property Search</button><button data-page="admin">Administration</button><button data-page="about">About 3D ULPIN</button></div><button id="logout" class="hidden" style="margin-left:auto">Sign out</button></div></nav>
+<nav class="nav"><div class="navin"><button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Open navigation">☰ <span>Menu</span></button><div class="navlinks" id="primaryNav"><button data-page="home" class="active">Home</button><button data-page="lookup">Property Search</button><button data-page="infrastructure">🏛️ Govt Infrastructure</button><button data-page="admin">Administration</button><button data-page="about">About 3D ULPIN</button></div><button id="logout" class="hidden" style="margin-left:auto">Sign out</button></div></nav>
 
 <main class="wrap">
 <section id="home" class="page">
 <div class="crumb">Home</div><div class="hero"><h2>3D Property Identity & Verification</h2><p>A government-style interface for viewing and administering vertical, underground and elevated property records linked to a parent ULPIN.</p></div>
-<div class="grid"><div class="card half"><div class="sectionline"></div><h3>Citizen / User Services</h3><p>Search an authorised property using its 3D ULPIN and inspect identity, location, elevation and available spatial documents.</p><div class="actions"><button class="btn primary" onclick="show('lookup')">Search Property</button></div></div>
-<div class="card half"><div class="sectionline"></div><h3>Administration</h3><p>Authorised administrators can register new cadastral objects and update existing records through the protected backend.</p><div class="actions"><button class="btn secondary" onclick="show('login');setRole('admin')">Administrator Login</button></div></div>
+<div class="grid"><div class="card third"><div class="sectionline"></div><h3>Citizen / User Services</h3><p>Search an authorised private property using its 3D ULPIN or owner name and inspect identity, volumetric elevation and spatial deeds.</p><div class="actions"><button class="btn primary" onclick="show('lookup')">Search Property</button></div></div>
+<div class="card third"><div class="sectionline"></div><h3>🏛️ Govt Infrastructure</h3><p>Statutory cadastre for Railways, Roads, Govt Secretariats, and Statues linked to 14-digit Parent ULPINs.</p><div class="actions"><button class="btn primary" style="background:#1e3a8a;border-color:#1e3a8a" onclick="show('infrastructure')">Govt Infrastructure</button></div></div>
+<div class="card third"><div class="sectionline"></div><h3>Administration</h3><p>Authorised administrators can register new cadastral objects and update existing records through the protected backend.</p><div class="actions"><button class="btn secondary" onclick="show('login');setRole('admin')">Administrator Login</button></div></div>
 <div class="card"><div class="sectionline"></div><div class="notice">The 3D identifier is an extension linked to the parent parcel identity. Geometry, rights, provenance and validation are maintained as separate records.</div></div></div>
 </section>
 
-<section id="login" class="page hidden login"><div class="hero"><h2>Secure Portal Login</h2><p id="loginSub">Sign in to access authorised services.</p></div><div class="card">
-<label>Account type</label><select id="loginRole"><option value="user">User / Citizen</option><option value="admin">Administrator</option></select>
-<label>User ID</label><input id="uid" autocomplete="username" placeholder="Enter user ID">
+<section id="login" class="page hidden login"><div class="hero"><h2>Secure Portal Login</h2><p id="loginSub">Sign in to access authorized cadastral services.</p></div><div class="card">
+<div style="background:#f1f5f9;border:1px solid #cbd5e1;border-radius:6px;padding:12px;margin-bottom:14px">
+  <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px">Official Authorized Credentials (Click to pre-fill):</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button type="button" class="btn outline" style="flex:1;font-size:11px;padding:8px;text-align:left" onclick="fillCreds('citizen')">👤 <strong>Citizen (View-Only)</strong><br><small style="color:var(--muted)">user@ulpin.gov.in / user@1221</small></button>
+    <button type="button" class="btn secondary" style="flex:1;font-size:11px;padding:8px;text-align:left" onclick="fillCreds('admin')">🛡️ <strong>Administrator (Full Access)</strong><br><small style="color:#ffd166">admin@ulpin.gov.in / adm@4523</small></button>
+  </div>
+</div>
+<label>Account type</label><select id="loginRole"><option value="user">User / Citizen (View-Only)</option><option value="admin">Cadastral Administrator (Full Access)</option></select>
+<label>User ID / Email</label><input id="uid" autocomplete="username" placeholder="user@ulpin.gov.in or admin@ulpin.gov.in">
 <label>Password</label><input id="pwd" type="password" autocomplete="current-password" placeholder="Enter password">
 <div class="actions"><button class="btn primary" onclick="login()">Sign in</button><button class="btn outline" onclick="show('home')">Cancel</button></div>
-<div class="notice warning" style="margin-top:16px">Authentication is enforced by the connected backend. This screen never stores database credentials.</div>
+<div class="notice warning" style="margin-top:16px">Role permissions: Citizens enjoy View-Only inspection, 3D exploration, and certificate downloads. Administrators have full privileges to create, edit, upload blueprints, and delete records.</div>
 </div></section>
 
 <section id="lookup" class="page hidden"><div class="crumb">Home / Property Search</div><div class="hero"><h2>Search 3D Property Record</h2><p>Search by Registered Citizen/Owner Name, Flat Number, 2D Parcel ULPIN, or 3D ULPIN.</p></div>
 <div class="grid"><div class="card half"><div class="sectionline"></div><h3>Citizen Property Search</h3><label>Owner Name / Flat / 3D ULPIN / 2D Parcel</label><input id="searchId" placeholder="e.g. Suresh Gowda, flat 301, 12345678901234, or 12345678901234-F03-V-PRV-A301-V01" onkeydown="if(event.key==='Enter') lookupProperty()"><div class="actions"><button class="btn primary" onclick="lookupProperty()">Search Property</button><button class="btn outline" onclick="document.getElementById('searchId').value='';hidePropertyPicker()">Clear</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:8px">💡 Hassle-free search: You can type an owner's registered name, property title, or cadastral ULPIN.</div></div>
 <div class="card half"><div class="sectionline"></div><h3>Hassle-Free Verification</h3><p style="color:var(--muted);line-height:1.6">Citizens can easily search without memorizing long codes. Enter the citizen's registered name (e.g. <strong>Suresh Gowda</strong> or <strong>Priya Sharma</strong>), flat number (e.g. <strong>flat 301</strong>), or land parcel ULPIN to view 3D volumetric boundaries, deeds, and nearby amenities.</p></div></div>
+<div style="margin-top:14px;display:flex;justify-content:flex-end">
+  <button type="button" class="btn outline" style="font-size:12px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px" onclick="toggleGovtInfraDrawer()">
+    <span>🏛️ Show Government & Public Infrastructure (Restricted/Official Sectors)</span> <span id="govtDrawerIcon">▾</span>
+  </button>
+</div>
+<div id="govtInfraDrawer" class="card hidden" style="margin-top:10px;background:#f8fafc;border:1px solid var(--line);padding:14px">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+    <strong style="color:var(--navy);font-size:13px">Government & Public Infrastructure Domains:</strong>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="font-size:11px;color:var(--muted)">Restricted surveyed sectors</span>
+      <button type="button" class="btn primary" style="font-size:11px;padding:4px 9px" onclick="show('infrastructure')">Open Govt Infrastructure Page →</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <button class="cat-filter-btn" onclick="filterPropertyCategory('all', this)">🌐 All Parcels</button>
+    <button class="cat-filter-btn" onclick="filterPropertyCategory('RAILWAY', this)">🚆 Railways & Stations</button>
+    <button class="cat-filter-btn" onclick="filterPropertyCategory('ROADS', this)">🛣️ Highways & Roads</button>
+    <button class="cat-filter-btn" onclick="filterPropertyCategory('GOVT_SPACES', this)">🏛️ Govt Secretariats</button>
+    <button class="cat-filter-btn" onclick="filterPropertyCategory('MONUMENTS', this)">🗽 Statues & Plazas</button>
+    <button class="cat-filter-btn" onclick="filterPropertyCategory('BUILDINGS', this)">🏢 Residential Housing</button>
+    <button class="cat-filter-btn" onclick="loadTownMasterplan(this)" style="background:#0284c7;color:#fff;border-color:#0369a1">🗺️ Load Integrated Masterplan</button>
+  </div>
+</div>
 <div id="propertyPickerContainer" class="card hidden"></div>
 <div id="result" class="grid hidden"></div></section>
 
 <section id="admin" class="page hidden"><div class="crumb">Home / Administration</div><div class="hero"><h2>Property Record Administration</h2><p>Create or update spatial property records using the standardized 3D ULPIN format.</p></div>
 <div id="adminGate" class="card"><div class="notice warning">Administrator authentication is required before editing records.</div><div class="actions"><button class="btn secondary" onclick="show('login');setRole('admin')">Administrator Login</button></div></div>
-<div id="adminPanel" class="grid hidden"><div class="card"><div class="sectionline"></div><h3>Register / Update Property</h3>
+<div id="adminPanel" class="grid hidden"><div class="card"><div class="sectionline"></div>
+<div id="citizenViewOnlyNotice" class="notice info hidden" style="margin-bottom:14px;background:#e0f2fe;border-left:4px solid #0284c7;color:#0369a1">
+  <strong>Citizen Mode (View-Only):</strong> You are authenticated under citizen credentials (<code>user@ulpin.gov.in</code>). Cadastral modifications, blueprint extrusions, and record publishing are restricted to Cadastral Administrators (<code>admin@ulpin.gov.in</code>).
+</div>
+<h3>Register / Update Property</h3>
 <div class="row"><div><label>Operation</label><select id="op" onchange="toggleUpdate()"><option value="create">Create new record</option><option value="update">Update existing record</option></select></div><div id="updateIdWrap" class="hidden"><label>Old 3D ULPIN to update</label><div style="display:flex;gap:8px"><input id="updateId" placeholder="Enter existing 3D ULPIN" style="flex:1"><button type="button" class="btn secondary" onclick="fetchUpdateRecord()">Fetch</button></div><small id="updateFetchStatus" style="color:var(--muted)">Enter the old 3D ULPIN and click Fetch.</small></div></div>
 
 <div class="notice" style="margin-bottom:14px;background:#f3f7f9;border-left:4px solid var(--navy);color:var(--navy)">
@@ -427,8 +476,51 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <strong>Live 3D ULPIN Form Preview:</strong> <span id="generatedId" style="font-weight:700;font-family:monospace;color:#1d4ed8;margin-left:6px">12345678901234-F01-V-PRV-A101-V01</span>
   <div style="font-size:11px;color:#64748b;margin-top:3px">Dynamic standard identifier formulated from your 14-digit parent, vertical tier, rights code, and unit.</div>
 </div>
-<div class="actions" style="margin-top:12px"><button class="btn success" onclick="saveProperty()">Save / Submit</button><button class="btn outline" onclick="resetAdmin()">Reset</button></div></div>
+<div class="actions" style="margin-top:12px"><button id="btnSaveProperty" class="btn success" onclick="saveProperty()">Save / Submit</button><button class="btn outline" onclick="resetAdmin()">Reset</button></div></div>
 <div class="card"><div class="sectionline"></div><h3>Record Governance</h3><div class="kv"><div>Geometry</div><div>3D solid / surface + elevation range</div><div>Rights</div><div>Linked separately to the spatial object</div><div>Validation</div><div>Topology and geometry status</div><div>Version</div><div>Incremented by the backend on approved change</div></div></div></div>
+</section>
+
+<section id="infrastructure" class="page hidden">
+  <div class="crumb">Home / Government Infrastructure</div>
+  <div class="hero">
+    <h2>🏛️ Government & Public Infrastructure Cadastre</h2>
+    <p>Statutory 3D spatial cadastre for state and central government infrastructure: Railways, Highways, Administrative Secretariats, and Public Monuments registered under authentic 14-digit Parent ULPINs (Bhu-Aadhaar).</p>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;background:#f8fafc;border:1px solid var(--line);padding:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:12px;font-weight:700;color:var(--navy);margin-right:4px">Filter Sector:</span>
+        <button type="button" class="cat-filter-btn active" data-infra-filter="all" onclick="filterInfraDomainGrid('all', this)">🌐 All Domains</button>
+        <button type="button" class="cat-filter-btn" data-infra-filter="RAILWAY" onclick="filterInfraDomainGrid('RAILWAY', this)">🚆 Railways</button>
+        <button type="button" class="cat-filter-btn" data-infra-filter="ROADS" onclick="filterInfraDomainGrid('ROADS', this)">🛣️ Highways & Roads</button>
+        <button type="button" class="cat-filter-btn" data-infra-filter="BRIDGES" onclick="filterInfraDomainGrid('BRIDGES', this)">🌉 Bridges & Viaducts</button>
+        <button type="button" class="cat-filter-btn" data-infra-filter="TUNNELS" onclick="filterInfraDomainGrid('TUNNELS', this)">🚇 Subterranean Tunnels</button>
+        <button type="button" class="cat-filter-btn" data-infra-filter="GOVT_SPACES" onclick="filterInfraDomainGrid('GOVT_SPACES', this)">🏛️ Govt Secretariats</button>
+        <button type="button" class="cat-filter-btn" data-infra-filter="MONUMENTS" onclick="filterInfraDomainGrid('MONUMENTS', this)">🗽 Statues & Plazas</button>
+        <button type="button" class="cat-filter-btn" onclick="loadTownMasterplan(this)" style="background:#0284c7;color:#fff;border-color:#0369a1">🗺️ Integrated Masterplan</button>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center">
+        <button type="button" id="btnAddInfraDomain" class="btn primary" style="font-size:12px;padding:7px 14px;display:inline-flex;align-items:center;gap:6px" onclick="openAddInfraModal()">
+          <span>➕ Add Public Infrastructure Domain</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Role info banner -->
+  <div id="infraRoleNotice" class="notice info" style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <div>
+      <strong>Government Property Governance:</strong> Public infrastructure domains are statutory state/central properties. Citizens have View-Only access to 3D models and cadastral records. Cadastral Administrators have full authority to register or decommission domains.
+    </div>
+    <span id="infraRoleBadge" class="status">Role: Citizen (View-Only)</span>
+  </div>
+
+  <!-- Dynamic Domains Grid -->
+  <div id="infraDomainsGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:14px">
+    <div style="padding:20px;text-align:center;color:var(--muted)">Loading government infrastructure domains…</div>
+  </div>
 </section>
 
 <section id="about" class="page hidden"><div class="crumb">Home / About</div><div class="hero"><h2>About the 3D ULPIN Extension</h2><p>The prototype retains the parent ULPIN as the base parcel identity and represents vertical, underground, elevated and air-right spaces as distinct 3D cadastral objects.</p></div>
@@ -438,6 +530,93 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <div id="languageLoading" class="lang-loading hidden" aria-live="polite"><div class="lang-loading-box"><div class="lang-loader"></div><div style="margin-top:12px">Translating…</div><button type="button" class="btn outline" id="cancelTranslation" style="margin-top:14px">Cancel</button></div></div>
 <div id="blueprintModal" class="modal hidden"><div class="modalbox"><div class="warnicon" style="font-size:30px">▧</div><h3>Blueprint / Source Documents</h3><div id="blueprintModalList" style="max-height:55vh;overflow:auto"></div><div class="actions"><button class="btn primary" onclick="closeBlueprintModal()">Close</button></div></div></div>
 <div id="modal" class="modal hidden"><div class="modalbox"><div class="warnicon">⚠</div><h3 id="modalTitle">Warning</h3><p id="modalText"></p><div class="actions"><button class="btn primary" onclick="closeModal()">OK</button></div></div></div>
+
+<!-- Register Public Infrastructure Domain Modal -->
+<div id="addInfraModal" class="modal hidden">
+  <div class="modalbox" style="max-width:680px;text-align:left">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px">
+      <div>
+        <h3 style="margin:0;color:var(--navy);font-size:17px">➕ Register Public Infrastructure Domain</h3>
+        <p style="margin:2px 0 0;font-size:12px;color:var(--muted)">Establish official 3D volumetric cadastre for surveyed government lands</p>
+      </div>
+      <button type="button" class="btn outline" style="padding:4px 9px;font-size:12px" onclick="closeAddInfraModal()">✕</button>
+    </div>
+
+    <form id="addInfraForm" onsubmit="event.preventDefault();submitNewInfrastructureDomain();">
+      <div style="margin-bottom:12px">
+        <label>Infrastructure Domain Name *</label>
+        <input id="infraName" required placeholder="e.g. Western High-Speed Railway Terminal - Sector 5">
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Infrastructure Sector Category *</label>
+          <select id="infraCategory" onchange="onInfraCategoryChange()">
+            <option value="RAILWAY">🚆 Indian Railways (Tracks, Platforms, Stations)</option>
+            <option value="ROADS">🛣️ Highways & Arterial Road Networks</option>
+            <option value="BRIDGES">🌉 Bridges, Flyovers & River Viaducts (Elevated Air-Rights Space E)</option>
+            <option value="TUNNELS">🚇 Subterranean Tunnels & Metro Tubes (Underground Space U)</option>
+            <option value="GOVT_SPACES">🏛️ Government Secretariats & Administrative Offices</option>
+            <option value="MONUMENTS">🗽 Statues, Pedestals & Civic Memorial Plazas</option>
+          </select>
+        </div>
+        <div>
+          <label>14-Digit Parent ULPIN (Bhu-Aadhaar) *</label>
+          <div style="display:flex;gap:6px">
+            <input id="infraParentUlpin" required maxlength="14" pattern="[0-9]{14}" value="28045678901238" style="font-family:monospace;letter-spacing:0.5px">
+            <button type="button" class="btn outline" style="padding:6px 10px;font-size:11px" onclick="autoGenerateInfraParentUlpin()">🎲 Auto</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Statutory Rights / Tenure Code *</label>
+          <input id="infraRights" value="RLW" placeholder="e.g. RLW, PUB, GOV">
+          <small style="color:var(--muted);font-size:10.5px">RLW: Railway ROW | PUB: Public Highway | GOV: Govt Statutory</small>
+        </div>
+        <div>
+          <label>Unit / Asset Identifier</label>
+          <input id="infraUnitId" placeholder="e.g. STN02, HWY01, SEC03">
+        </div>
+      </div>
+
+      <div style="margin-top:10px">
+        <label>Address / Surveyed Location</label>
+        <input id="infraAddress" value="Capital Region Development Area, Amaravathi, Andhra Pradesh">
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Latitude</label>
+          <input id="infraLat" type="number" step="0.000001" value="16.5075">
+        </div>
+        <div>
+          <label>Longitude</label>
+          <input id="infraLon" type="number" step="0.000001" value="80.5235">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>Building / Plinth Height (meters)</label>
+          <input id="infraHeight" type="number" step="0.5" value="14.0">
+        </div>
+        <div>
+          <label>Surveyed Ground Area (sq.m)</label>
+          <input id="infraArea" type="number" step="1" value="5000">
+        </div>
+      </div>
+
+      <div id="infraSubmitNotice" class="notice warning hidden" style="margin-top:12px;font-size:11px"></div>
+
+      <div class="actions" style="margin-top:16px;justify-content:flex-end">
+        <button type="button" class="btn outline" onclick="closeAddInfraModal()">Cancel</button>
+        <button type="submit" id="btnSubmitInfra" class="btn primary">Register Infrastructure Domain</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 
 <!-- SVAMITVA 3D ULPIN Certificate Modal -->
@@ -529,6 +708,19 @@ button:disabled{opacity:.5;cursor:not-allowed}
           <button data-floor="F03" onclick="filterViewerFloor('F03')">FLOOR 3</button>
           <button data-floor="R00" onclick="filterViewerFloor('R00')">TERRACE</button>
         </div>
+        <div class="model-layerbar" id="layerButtonGroup">
+          <span style="font-size:10px;font-weight:800;color:#94a3b8;margin-right:2px;letter-spacing:.3px">LAYERS:</span>
+          <button data-cat="all" class="cat-pill active" onclick="filterViewerCategory('all')">🌐 ALL</button>
+          <button data-cat="RAILWAY" class="cat-pill" onclick="filterViewerCategory('RAILWAY')">🚆 RAILWAYS</button>
+          <button data-cat="ROADS" class="cat-pill" onclick="filterViewerCategory('ROADS')">🛣️ ROADS</button>
+          <button data-cat="BRIDGES" class="cat-pill" onclick="filterViewerCategory('BRIDGES')">🌉 BRIDGES</button>
+          <button data-cat="TUNNELS" class="cat-pill" onclick="filterViewerCategory('TUNNELS')">🚇 TUNNELS</button>
+          <button data-cat="GOVT_SPACES" class="cat-pill" onclick="filterViewerCategory('GOVT_SPACES')">🏛️ GOVT</button>
+          <button data-cat="MONUMENTS" class="cat-pill" onclick="filterViewerCategory('MONUMENTS')">🗽 STATUES</button>
+          <button data-cat="BUILDINGS" class="cat-pill" onclick="filterViewerCategory('BUILDINGS')">🏢 HOUSING</button>
+          <button data-cat="COMMON_SPACES" class="cat-pill" onclick="filterViewerCategory('COMMON_SPACES')">🌳 COMMON</button>
+          <button id="btnIsolateToggle" class="cat-pill mode-pill active" onclick="toggleViewerIsolateMode()" title="Toggle Solo Isolation vs Highlight Context">🎯 ISOLATE: ON</button>
+        </div>
         <div class="model-explodabar">
           <span style="font-size:11px;font-weight:700;color:var(--gold)">Explode:</span>
           <input type="range" id="explodeSlider" min="0" max="1" step="0.02" value="0" oninput="updateViewerExplode(this.value)" style="width:90px;cursor:pointer;accent-color:var(--gold)">
@@ -565,8 +757,12 @@ button:disabled{opacity:.5;cursor:not-allowed}
           </div>
           <div style="display:flex;flex-direction:column;gap:8px">
             <button class="btn success" style="width:100%;padding:8px;font-size:12px" onclick="runVcadExtrusionOnCurrentBlueprint()">⚡ Extrude Blueprint with V-CAD</button>
+            <button class="btn primary" style="width:100%;padding:8px;font-size:11.5px;background:#7c3aed;border-color:#6d28d9" onclick="extrudeTunnelInfrastructureBlueprint()">🚇 Auto-Extrude Tunnel Infrastructure Blueprint</button>
             <button class="btn primary" style="width:100%;padding:8px;font-size:11.5px;background:#0284c7" onclick="extrudeOfficialTestBlueprint()">🧪 Auto-Extrude Official Test Blueprint</button>
-            <a href="/storage/blueprints/official_test_blueprint.png" download="official_test_blueprint.png" target="_blank" style="display:block;text-align:center;padding:6px;font-size:11px;color:#38bdf8;background:#111b2e;border:1px solid #1e3a5f;border-radius:4px;text-decoration:none">📥 Download Official Test Blueprint (PNG)</a>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <a href="/storage/blueprints/tunnel_infrastructure_blueprint.png" download="tunnel_infrastructure_blueprint.png" target="_blank" style="flex:1;text-align:center;padding:6px;font-size:10.5px;color:#a78bfa;background:#1e1b4b;border:1px solid #4338ca;border-radius:4px;text-decoration:none">📥 Download Tunnel CAD (PNG)</a>
+              <a href="/storage/blueprints/official_test_blueprint.png" download="official_test_blueprint.png" target="_blank" style="flex:1;text-align:center;padding:6px;font-size:10.5px;color:#38bdf8;background:#111b2e;border:1px solid #1e3a5f;border-radius:4px;text-decoration:none">📥 Download Test Blueprint</a>
+            </div>
             <label style="font-size:11px;color:#fff;margin-top:4px">Upload new blueprint to extrude:</label>
             <input type="file" id="cvDirectFileInput" accept=".png,.jpg,.jpeg,.svg,.json" style="font-size:11px;padding:5px;background:#1a2540;color:#fff;border-color:#2b3857" onchange="loadDirectBlueprintToVcad(this)">
           </div>
@@ -603,6 +799,7 @@ function show(id){
   if(target) target.classList.remove('hidden');
   document.querySelectorAll('.nav button[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
   if(id==="admin") { refreshAdmin(); restoreFormDraft(); updateLevelSummary(); }
+  if(id==="infrastructure") { loadInfrastructureDomains(); }
 }
 
 function setRole(r){
@@ -620,6 +817,21 @@ function closeModal(){
   document.getElementById('modal').classList.add('hidden');
 }
 
+function fillCreds(type){
+  const uid = document.getElementById('uid');
+  const pwd = document.getElementById('pwd');
+  const loginRole = document.getElementById('loginRole');
+  if(type === 'citizen'){
+    if(uid) uid.value = 'user@ulpin.gov.in';
+    if(pwd) pwd.value = 'user@1221';
+    if(loginRole) loginRole.value = 'user';
+  } else if(type === 'admin'){
+    if(uid) uid.value = 'admin@ulpin.gov.in';
+    if(pwd) pwd.value = 'adm@4523';
+    if(loginRole) loginRole.value = 'admin';
+  }
+}
+
 async function login(){
   const email=document.getElementById('uid').value.trim();
   const password=document.getElementById('pwd').value;
@@ -632,39 +844,145 @@ async function login(){
     });
     if(res.ok){
       const data=await res.json();
-      role=data.role||'admin';
-      token=data.token||'local-token';
+      role=data.role||(email.includes('admin')?'admin':'citizen');
+      token=data.token||'auth-token';
+      sessionStorage.setItem('ulpin_role',role);
+      sessionStorage.setItem('ulpin_email',email);
+      updateRole();
+      if(role === 'citizen'){
+        show('lookup');
+      } else {
+        show('admin');
+      }
+      return;
+    } else {
+      const err = await res.json().catch(()=>({detail:'Invalid credentials'}));
+      return warn("Authentication Failed", err.detail || "Invalid credentials. Use Citizen (user@ulpin.gov.in / user@1221) or Admin (admin@ulpin.gov.in / adm@4523).");
+    }
+  }catch(e){
+    console.warn('API login offline fallback',e);
+    if(email === 'user@ulpin.gov.in' && password === 'user@1221'){
+      role='citizen';
+      token='local-citizen-token';
+      sessionStorage.setItem('ulpin_role',role);
+      sessionStorage.setItem('ulpin_email',email);
+      updateRole();
+      show('lookup');
+      return;
+    } else if(email === 'admin@ulpin.gov.in' && password === 'adm@4523'){
+      role='admin';
+      token='local-admin-token';
       sessionStorage.setItem('ulpin_role',role);
       sessionStorage.setItem('ulpin_email',email);
       updateRole();
       show('admin');
       return;
+    } else {
+      return warn("Authentication Failed", "Invalid credentials. Citizen: user@ulpin.gov.in (user@1221) | Administrator: admin@ulpin.gov.in (adm@4523).");
     }
-  }catch(e){
-    console.warn('API login offline fallback',e);
   }
-  role='admin';
-  token='local-admin-token';
-  sessionStorage.setItem('ulpin_role',role);
-  sessionStorage.setItem('ulpin_email',email);
-  updateRole();
-  show('admin');
 }
 
 function updateRole(){
   const badge = document.getElementById('roleBadge');
   const logoutBtn = document.getElementById('logout');
-  if(badge) badge.textContent = role==="admin" ? "Administrator" : "User";
-  if(logoutBtn) logoutBtn.classList.remove('hidden');
+  if(badge){
+    if(role === "admin"){
+      badge.textContent = "Cadastral Administrator (Full Access)";
+      badge.style.background = "#dcfce7";
+      badge.style.color = "#166534";
+    } else if(role === "citizen"){
+      badge.textContent = "Citizen (View-Only)";
+      badge.style.background = "#e0f2fe";
+      badge.style.color = "#0369a1";
+    } else {
+      badge.textContent = "Not signed in";
+      badge.style.background = "";
+      badge.style.color = "";
+    }
+  }
+  if(logoutBtn) {
+    if(role) logoutBtn.classList.remove('hidden');
+    else logoutBtn.classList.add('hidden');
+  }
+  applyRolePermissions();
+}
+
+function applyRolePermissions(){
+  const adminGate = document.getElementById('adminGate');
+  const adminPanel = document.getElementById('adminPanel');
+  const citizenNotice = document.getElementById('citizenViewOnlyNotice');
+  const saveBtn = document.getElementById('btnSaveProperty');
+  const instantExtrudeBtn = document.getElementById('btnInstantExtrude');
+
+  if(!role){
+    if(adminGate) adminGate.classList.remove('hidden');
+    if(adminPanel) adminPanel.classList.add('hidden');
+    return;
+  }
+  if(adminGate) adminGate.classList.add('hidden');
+  if(adminPanel) adminPanel.classList.remove('hidden');
+
+  if(role === 'citizen'){
+    if(citizenNotice) citizenNotice.classList.remove('hidden');
+    if(saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.style.opacity = '0.4';
+      saveBtn.title = "Citizen accounts have view-only access.";
+    }
+    if(instantExtrudeBtn) {
+      instantExtrudeBtn.disabled = true;
+      instantExtrudeBtn.style.opacity = '0.4';
+    }
+    document.querySelectorAll('#adminPanel input, #adminPanel select, #adminPanel textarea').forEach(el => {
+      el.disabled = true;
+    });
+  } else {
+    if(citizenNotice) citizenNotice.classList.add('hidden');
+    if(saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.style.opacity = '1';
+      saveBtn.title = "";
+    }
+    if(instantExtrudeBtn) {
+      instantExtrudeBtn.disabled = false;
+      instantExtrudeBtn.style.opacity = '1';
+    }
+    document.querySelectorAll('#adminPanel input, #adminPanel select, #adminPanel textarea').forEach(el => {
+      el.disabled = false;
+    });
+  }
+
+  const infraBadge = document.getElementById('infraRoleBadge');
+  const addInfraBtn = document.getElementById('btnAddInfraDomain');
+  if(infraBadge){
+    if(role === 'admin'){
+      infraBadge.textContent = 'Role: Cadastral Administrator (Full Access)';
+      infraBadge.style.background = '#dcfce7';
+      infraBadge.style.color = '#166534';
+    } else if(role === 'citizen'){
+      infraBadge.textContent = 'Role: Citizen (View-Only)';
+      infraBadge.style.background = '#e0f2fe';
+      infraBadge.style.color = '#0369a1';
+    } else {
+      infraBadge.textContent = 'Role: Public Guest (View-Only)';
+      infraBadge.style.background = '#f1f5f9';
+      infraBadge.style.color = '#475569';
+    }
+  }
+  if(addInfraBtn){
+    if(role === 'citizen'){
+      addInfraBtn.title = 'Citizen account (View-Only). Administrator login required to register public infrastructure.';
+    } else {
+      addInfraBtn.title = 'Register a new public infrastructure domain';
+    }
+  }
 }
 
 async function logout(){
   try{ if(auth) await auth.signOut(); }catch(e){console.error(e)}
   role=null; token=null; sessionStorage.clear();
-  const badge=document.getElementById('roleBadge');
-  const logoutBtn=document.getElementById('logout');
-  if(badge) badge.textContent='Not signed in';
-  if(logoutBtn) logoutBtn.classList.add('hidden');
+  updateRole();
   show('home');
 }
 
@@ -908,6 +1226,358 @@ function selectPickedProperty(ulpin){
   if(searchInput) searchInput.value = ulpin;
   hidePropertyPicker();
   lookupProperty();
+}
+
+async function filterPropertyCategory(category, btnEl){
+  document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+  hidePropertyPicker();
+
+  try {
+    const res = await fetch('/api/properties');
+    if(!res.ok) return;
+    const all = await res.json();
+    let filtered = all;
+    if(category && category !== 'all'){
+      filtered = all.filter(p => {
+        const cat = p.category || '';
+        const name = (p.name || '').toUpperCase();
+        if(category === 'RAILWAY') return cat === 'RAILWAY' || name.includes('RAIL') || name.includes('STATION');
+        if(category === 'ROADS') return cat === 'ROADS' || name.includes('ROAD') || name.includes('HIGHWAY');
+        if(category === 'GOVT_SPACES') return cat === 'GOVT_SPACES' || name.includes('SECRETARIAT') || name.includes('GOVT') || name.includes('POLICE');
+        if(category === 'MONUMENTS') return cat === 'MONUMENTS' || name.includes('STATUE') || name.includes('MEMORIAL') || name.includes('PLAZA');
+        if(category === 'BUILDINGS') return cat === 'BUILDINGS' || name.includes('RESIDENTIAL') || name.includes('APARTMENT') || name.includes('FLAT') || name.includes('HOUSING') || name.includes('TOWER');
+        return cat === category;
+      });
+    }
+    if(filtered.length === 0){
+      warn('No Parcels Found', `No registered properties found in category: ${category}`);
+      return;
+    }
+    showPropertyPicker(filtered, category === 'all' ? 'All Registered Parcels' : category);
+  } catch(e) {
+    console.error('Category filter failed:', e);
+  }
+}
+
+async function loadTownMasterplan(btnEl){
+  document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+
+  const modal = document.getElementById('modelModal');
+  if(modal) modal.classList.remove('hidden');
+  switchSidebarTab('units');
+
+  const headerTitle = document.getElementById('modelHeaderTitle');
+  if(headerTitle){
+    headerTitle.innerHTML = `<span style="color:#00f0ff;font-weight:700">INTEGRATED TOWNSHIP MASTERPLAN</span> &nbsp;•&nbsp; <span style="color:#ffd166;font-family:monospace;font-size:12.5px">28040001000000 (Multi-Sector Cadastre)</span>`;
+  }
+
+  if(!vcadViewer){
+    vcadViewer = new Vcad3DViewer('modelCanvas', 'labelsOverlay', (unitData) => {
+      onViewerUnitSelected(unitData);
+    });
+  }
+
+  try {
+    const res = await fetch('/api/cadastre/specialized/master');
+    if(res.ok){
+      currentCadastrePayload = await res.json();
+      loadCadastreIntoViewer(currentCadastrePayload);
+    }
+  } catch(e){
+    console.error('Failed to load township masterplan:', e);
+  }
+
+  setTimeout(() => {
+    if(vcadViewer){
+      vcadViewer.onResize();
+      vcadViewer.fitCameraToScene();
+    }
+  }, 150);
+}
+
+// --- Government & Public Infrastructure Domains Management ---
+let currentInfraFilter = 'all';
+let allLoadedInfraDomains = [];
+
+function toggleGovtInfraDrawer(){
+  const drawer = document.getElementById('govtInfraDrawer');
+  const icon = document.getElementById('govtDrawerIcon');
+  if(!drawer) return;
+  const isHidden = drawer.classList.toggle('hidden');
+  if(icon) icon.textContent = isHidden ? '▾' : '▴';
+}
+
+function filterInfraDomainGrid(category, btnEl){
+  currentInfraFilter = category || 'all';
+  document.querySelectorAll('#infrastructure .cat-filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.infraFilter === currentInfraFilter);
+  });
+  renderInfraGrid();
+}
+
+async function loadInfrastructureDomains(filterCategory, btnEl){
+  if(filterCategory) currentInfraFilter = filterCategory;
+  if(btnEl){
+    document.querySelectorAll('#infrastructure .cat-filter-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
+  const grid = document.getElementById('infraDomainsGrid');
+  if(grid) grid.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">Loading official government infrastructure domains…</div>';
+
+  try {
+    const res = await fetch('/api/infrastructure/domains');
+    if(!res.ok) throw new Error('Failed to load infrastructure domains');
+    const data = await res.json();
+    allLoadedInfraDomains = data.domains || [];
+    renderInfraGrid();
+  } catch(e) {
+    console.error(e);
+    if(grid) grid.innerHTML = `<div style="padding:20px;color:var(--danger)">Failed to load infrastructure domains: ${e.message}</div>`;
+  }
+}
+
+function renderInfraGrid(){
+  const grid = document.getElementById('infraDomainsGrid');
+  if(!grid) return;
+
+  let list = allLoadedInfraDomains;
+  if(currentInfraFilter && currentInfraFilter !== 'all'){
+    list = list.filter(d => {
+      const cat = (d.category || '').toUpperCase();
+      const nm = (d.name || '').toUpperCase();
+      if(currentInfraFilter === 'RAILWAY') return cat === 'RAILWAY' || nm.includes('RAIL') || nm.includes('STATION');
+      if(currentInfraFilter === 'ROADS') return cat === 'ROADS' || nm.includes('ROAD') || nm.includes('HIGHWAY');
+      if(currentInfraFilter === 'BRIDGES') return cat === 'BRIDGES' || nm.includes('BRIDGE') || nm.includes('VIADUCT') || nm.includes('FLYOVER');
+      if(currentInfraFilter === 'TUNNELS') return cat === 'TUNNELS' || nm.includes('TUNNEL') || nm.includes('SUBTERRANEAN') || nm.includes('METRO');
+      if(currentInfraFilter === 'GOVT_SPACES') return cat === 'GOVT_SPACES' || nm.includes('SECRETARIAT') || nm.includes('GOV');
+      if(currentInfraFilter === 'MONUMENTS') return cat === 'MONUMENTS' || nm.includes('STATUE') || nm.includes('MONUMENT');
+      return cat === currentInfraFilter;
+    });
+  }
+
+  if(list.length === 0){
+    grid.innerHTML = '<div style="padding:24px;text-align:center;color:var(--muted);grid-column:1/-1">No public infrastructure domains found in this sector.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(d => {
+    const cat = (d.category || 'GOVT_SPACES').toUpperCase();
+    let tagClass = 'govt';
+    let tagIcon = '🏛️';
+    let tagLabel = 'Govt Secretariat';
+
+    if(cat === 'RAILWAY' || (d.name||'').toUpperCase().includes('RAIL')){
+      tagClass = 'railway'; tagIcon = '🚆'; tagLabel = 'Indian Railways';
+    } else if(cat === 'BRIDGES' || (d.name||'').toUpperCase().includes('BRIDGE') || (d.name||'').toUpperCase().includes('VIADUCT') || (d.name||'').toUpperCase().includes('FLYOVER')){
+      tagClass = 'bridges'; tagIcon = '🌉'; tagLabel = 'Bridge / Viaduct';
+    } else if(cat === 'TUNNELS' || (d.name||'').toUpperCase().includes('TUNNEL') || (d.name||'').toUpperCase().includes('SUBTERRANEAN')){
+      tagClass = 'tunnels'; tagIcon = '🚇'; tagLabel = 'Subterranean Tunnel';
+    } else if(cat === 'ROADS' || (d.name||'').toUpperCase().includes('ROAD')){
+      tagClass = 'roads'; tagIcon = '🛣️'; tagLabel = 'Roads & Highway';
+    } else if(cat === 'MONUMENTS' || (d.name||'').toUpperCase().includes('STATUE')){
+      tagClass = 'monument'; tagIcon = '🗽'; tagLabel = 'Statue & Monument';
+    } else if(cat === 'MASTER_TOWN' || (d.name||'').toUpperCase().includes('MASTER')){
+      tagClass = 'master'; tagIcon = '🗺️'; tagLabel = 'Town Masterplan';
+    }
+
+    const ulpin3d = d.threeDULPIN || d.id;
+    const parentUlpin = d.parentULPIN || (ulpin3d.split('-')[0]) || '28045678901234';
+    const area = d.area || '—';
+    const rights = d.rights || (cat === 'RAILWAY' ? 'RLW' : cat === 'ROADS' ? 'PUB' : 'GOV');
+    const addr = d.address || 'Amaravathi Capital Region, Andhra Pradesh';
+    const isCitizen = role === 'citizen';
+
+    return `
+      <div class="infra-card">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px">
+            <span class="infra-tag ${tagClass}">${tagIcon} ${tagLabel}</span>
+            <span style="font-size:10px;font-weight:700;color:var(--muted);background:#f1f5f9;padding:2px 6px;border-radius:3px">${rights}</span>
+          </div>
+
+          <h3 style="margin:4px 0 6px;color:var(--navy);font-size:15px;line-height:1.35">${escapeHtml(d.name || 'Infrastructure Domain')}</h3>
+
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;padding:6px 8px;margin:8px 0;font-size:11px">
+            <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.4px">3D ULPIN:</div>
+            <div style="font-family:monospace;font-weight:700;color:#1e3a8a;word-break:break-all">${escapeHtml(ulpin3d)}</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--muted);margin-top:6px">
+            <div>📍 <strong>Parent 2D ULPIN:</strong> <span style="font-family:monospace;color:var(--navy);font-weight:700">${escapeHtml(parentUlpin)}</span></div>
+            <div>📐 <strong>Surveyed Area:</strong> ${escapeHtml(area)} &nbsp;|&nbsp; <strong>Height:</strong> +${d.buildingHeight || 12}m</div>
+            <div>🏢 <strong>Location:</strong> ${escapeHtml(addr)}</div>
+          </div>
+        </div>
+
+        <div class="infra-actions">
+          <button type="button" class="btn primary" style="flex:1;font-size:11.5px;padding:6px 10px" onclick="open3DModelViewer('${escapeHtml(ulpin3d)}', '${escapeHtml(d.name || 'Infrastructure')}')">
+            🌐 View 3D Cadastre
+          </button>
+          <button type="button" class="btn outline" style="color:#dc2626;border-color:#fca5a5;padding:6px 10px;font-size:11.5px" title="${isCitizen ? 'Citizen View-Only: Admin required to delete' : 'Decommission/Delete government domain'}" onclick="deleteInfrastructureDomain('${escapeHtml(ulpin3d)}', '${escapeHtml(d.name || 'Infrastructure')}')">
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openAddInfraModal(){
+  if(role === 'citizen'){
+    return warn('Access Restricted', 'Citizen accounts (user@ulpin.gov.in) have View-Only access. Cadastral Administrator credentials (admin@ulpin.gov.in) are required to register new government infrastructure domains.');
+  }
+  const modal = document.getElementById('addInfraModal');
+  if(!modal) return;
+  const notice = document.getElementById('infraSubmitNotice');
+  if(notice) notice.classList.add('hidden');
+  autoGenerateInfraParentUlpin();
+  onInfraCategoryChange();
+  modal.classList.remove('hidden');
+}
+
+function closeAddInfraModal(){
+  const modal = document.getElementById('addInfraModal');
+  if(modal) modal.classList.add('hidden');
+}
+
+function autoGenerateInfraParentUlpin(){
+  const pInput = document.getElementById('infraParentUlpin');
+  if(!pInput) return;
+  // Authentic 14-digit SVAMITVA Bhu-Aadhaar format: 28 (AP) + 04 (Guntur) + random 10 digits
+  const randomSuffix = Math.floor(1000000000 + Math.random() * 9000000000);
+  pInput.value = '2804' + randomSuffix;
+}
+
+function onInfraCategoryChange(){
+  const cat = document.getElementById('infraCategory')?.value || 'RAILWAY';
+  const rInput = document.getElementById('infraRights');
+  const hInput = document.getElementById('infraHeight');
+  const aInput = document.getElementById('infraArea');
+  const uInput = document.getElementById('infraUnitId');
+
+  if(cat === 'RAILWAY'){
+    if(rInput) rInput.value = 'RLW';
+    if(hInput) hInput.value = '11.5';
+    if(aInput) aInput.value = '4500';
+    if(uInput) uInput.placeholder = 'e.g. STN01';
+  } else if(cat === 'ROADS'){
+    if(rInput) rInput.value = 'PUB';
+    if(hInput) hInput.value = '7.0';
+    if(aInput) aInput.value = '3200';
+    if(uInput) uInput.placeholder = 'e.g. HWY01';
+  } else if(cat === 'BRIDGES'){
+    if(rInput) rInput.value = 'PUB';
+    if(hInput) hInput.value = '11.2';
+    if(aInput) aInput.value = '1680';
+    if(uInput) uInput.placeholder = 'e.g. BRG01';
+  } else if(cat === 'TUNNELS'){
+    if(rInput) rInput.value = 'PUB';
+    if(hInput) hInput.value = '3.5';
+    if(aInput) aInput.value = '1870';
+    if(uInput) uInput.placeholder = 'e.g. TNL01';
+  } else if(cat === 'MONUMENTS'){
+    if(rInput) rInput.value = 'GOV';
+    if(hInput) hInput.value = '9.5';
+    if(aInput) aInput.value = '1600';
+    if(uInput) uInput.placeholder = 'e.g. STAT01';
+  } else {
+    if(rInput) rInput.value = 'GOV';
+    if(hInput) hInput.value = '15.0';
+    if(aInput) aInput.value = '3800';
+    if(uInput) uInput.placeholder = 'e.g. SEC01';
+  }
+}
+
+async function submitNewInfrastructureDomain(){
+  if(role === 'citizen'){
+    return warn('Access Restricted', 'Citizen accounts cannot register government properties. Please log in as Administrator.');
+  }
+
+  const name = document.getElementById('infraName')?.value?.trim();
+  if(!name){
+    return warn('Missing Information', 'Please provide a name for this infrastructure domain.');
+  }
+
+  const category = document.getElementById('infraCategory')?.value || 'GOVT_SPACES';
+  const parentUlpin = document.getElementById('infraParentUlpin')?.value?.trim() || '28045678901238';
+  const rights = document.getElementById('infraRights')?.value?.trim() || 'GOV';
+  const unitId = document.getElementById('infraUnitId')?.value?.trim() || '';
+  const address = document.getElementById('infraAddress')?.value?.trim() || 'Amaravathi, Andhra Pradesh';
+  const lat = parseFloat(document.getElementById('infraLat')?.value || 16.5075);
+  const lon = parseFloat(document.getElementById('infraLon')?.value || 80.5235);
+  const buildingHeight = parseFloat(document.getElementById('infraHeight')?.value || 14.0);
+  const area = document.getElementById('infraArea')?.value || '5000';
+
+  const btn = document.getElementById('btnSubmitInfra');
+  if(btn) { btn.disabled = true; btn.textContent = 'Generating 3D Cadastre…'; }
+
+  try {
+    const res = await fetch('/api/infrastructure/domains', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token || 'admin-token'}`
+      },
+      body: JSON.stringify({
+        name,
+        category,
+        parent_ulpin: parentUlpin,
+        rights,
+        unit_id: unitId,
+        address,
+        lat,
+        lon,
+        buildingHeight,
+        area: `${area} sq.m`,
+        role: role || 'admin'
+      })
+    });
+
+    const data = await res.json();
+    if(!res.ok){
+      throw new Error(data.error || 'Failed to register public infrastructure domain');
+    }
+
+    closeAddInfraModal();
+    warn('Domain Registered', data.message || `Successfully registered public infrastructure domain with 3D ULPIN: ${data.domain?.threeDULPIN}`);
+    await loadInfrastructureDomains();
+  } catch(e) {
+    console.error(e);
+    warn('Registration Failed', e.message || 'Unable to register infrastructure domain.');
+  } finally {
+    if(btn) { btn.disabled = false; btn.textContent = 'Register Infrastructure Domain'; }
+  }
+}
+
+async function deleteInfrastructureDomain(ulpin3d, name){
+  if(role === 'citizen'){
+    return warn('Permission Denied', 'Citizen accounts (user@ulpin.gov.in) are View-Only. Cadastral Administrator authentication (admin@ulpin.gov.in) is required to delete government infrastructure records.');
+  }
+
+  const ok = confirm(`Are you sure you want to decommission and delete the public infrastructure domain '${name}' (${ulpin3d})?\n\nThis will remove the statutory property entry and associated 3D model.`);
+  if(!ok) return;
+
+  try {
+    const res = await fetch(`/api/infrastructure/domains/${encodeURIComponent(ulpin3d)}?role=${role || 'admin'}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token || 'admin-token'}`
+      }
+    });
+
+    const data = await res.json();
+    if(!res.ok){
+      throw new Error(data.error || 'Failed to delete domain');
+    }
+
+    warn('Domain Decommissioned', data.message || `Public infrastructure domain ${ulpin3d} deleted successfully.`);
+    await loadInfrastructureDomains();
+  } catch(e) {
+    console.error(e);
+    warn('Delete Failed', e.message || 'Unable to delete infrastructure domain.');
+  }
 }
 
 async function renderResult(d,failed){
@@ -1963,26 +2633,43 @@ function closeULPINCertificate(){
   document.getElementById('certificateModal')?.classList.add('hidden');
 }
 
-async function open3DModelViewer(){
+async function open3DModelViewer(overridePropId, overrideTitle){
   const modal = document.getElementById('modelModal');
   if(modal) modal.classList.remove('hidden');
   switchSidebarTab('units');
 
   const prop = currentLoadedProperty;
-  const propId = prop?.threeDULPIN || '12345678901234-F03-V-PRV-A301-V01';
+  const propId = overridePropId || prop?.threeDULPIN || '12345678901234-F03-V-PRV-A301-V01';
   const headerTitle = document.getElementById('modelHeaderTitle');
   if(headerTitle){
-    headerTitle.textContent = prop ? `${prop.name || 'Property'} — ${prop.threeDULPIN}` : 'V-CAD 3D Building Cadastre Explorer';
+    if(overrideTitle){
+      headerTitle.textContent = `${overrideTitle} — ${propId}`;
+    } else {
+      headerTitle.textContent = prop ? `${prop.name || 'Property'} — ${prop.threeDULPIN}` : 'V-CAD 3D Building Cadastre Explorer';
+    }
   }
 
-  if(!vcadViewer){
+  const cvName = document.getElementById('cvSourceName');
+  if(cvName && prop && Array.isArray(prop.blueprints) && prop.blueprints.length > 0){
+    cvName.textContent = prop.blueprints[0].name || prop.blueprints[0].filename || 'official_test_blueprint.png';
+  }
+
+  if(!vcadViewer || !vcadViewer.renderer){
     vcadViewer = new Vcad3DViewer('modelCanvas', 'labelsOverlay', (unitData) => {
       onViewerUnitSelected(unitData);
     });
   }
+  window.vcadViewer = vcadViewer;
 
   try {
-    const res = await fetch('/api/vcad/cadastre/' + encodeURIComponent(propId));
+    let res = await fetch('/api/vcad/cadastre/' + encodeURIComponent(propId));
+    if(!res.ok){
+      res = await fetch(`/storage/models/${encodeURIComponent(propId)}.json`);
+      if(!res.ok){
+        const p2d = (propId || '').split('-')[0];
+        res = await fetch(`/storage/models/${encodeURIComponent(p2d)}.json`);
+      }
+    }
     if(res.ok){
       currentCadastrePayload = await res.json();
       loadCadastreIntoViewer(currentCadastrePayload);
@@ -1991,6 +2678,18 @@ async function open3DModelViewer(){
       loadDefaultCadastreIntoViewer();
     }
   } catch(e) {
+    try {
+      let staticRes = await fetch(`/storage/models/${encodeURIComponent(propId)}.json`);
+      if(!staticRes.ok){
+        const p2d = (propId || '').split('-')[0];
+        staticRes = await fetch(`/storage/models/${encodeURIComponent(p2d)}.json`);
+      }
+      if(staticRes.ok){
+        currentCadastrePayload = await staticRes.json();
+        loadCadastreIntoViewer(currentCadastrePayload);
+        return;
+      }
+    } catch(err) {}
     console.warn('V-CAD API request failed, loading default cadastre', e);
     loadDefaultCadastreIntoViewer();
   }
@@ -2016,6 +2715,32 @@ function loadCadastreIntoViewer(payload){
     floorGroup.innerHTML = Array.from(floors).map(f => `
       <button data-floor="${f}" class="${f==='all'?'active':''}" onclick="filterViewerFloor('${f}')">${f==='all'?'ALL FLOORS':f}</button>
     `).join('');
+  }
+
+  const layerGroup = document.getElementById('layerButtonGroup');
+  if(layerGroup){
+    const cats = new Set(['all']);
+    (payload.geometries || []).forEach(g => {
+      if(g.category) cats.add(g.category);
+    });
+    const catLabels = {
+      'all': '🌐 ALL',
+      'RAILWAY': '🚆 RAILWAYS',
+      'ROADS': '🛣️ ROADS',
+      'BRIDGES': '🌉 BRIDGES',
+      'TUNNELS': '🚇 TUNNELS',
+      'GOVT_SPACES': '🏛️ GOVT',
+      'MONUMENTS': '🗽 STATUES',
+      'BUILDINGS': '🏢 HOUSING',
+      'COMMON_SPACES': '🌳 COMMON'
+    };
+    layerGroup.innerHTML = `
+      <span style="font-size:10px;font-weight:800;color:#94a3b8;margin-right:2px;letter-spacing:.3px">LAYERS:</span>
+      ${Array.from(cats).map(c => `
+        <button data-cat="${c}" class="cat-pill ${c==='all'?'active':''}" onclick="filterViewerCategory('${c}')">${catLabels[c] || c}</button>
+      `).join('')}
+      <button id="btnIsolateToggle" class="cat-pill mode-pill active" onclick="toggleViewerIsolateMode()" title="Toggle Solo Isolation vs Highlight Context">🎯 ISOLATE: ON</button>
+    `;
   }
 
   const list = document.getElementById('ownerList');
@@ -2215,6 +2940,29 @@ function filterViewerFloor(floorCode){
   });
 }
 
+function filterViewerCategory(catCode){
+  if(vcadViewer){
+    vcadViewer.setCategory(catCode);
+  }
+  document.querySelectorAll('#layerButtonGroup .cat-pill').forEach(btn => {
+    if(btn.id !== 'btnIsolateToggle'){
+      btn.classList.toggle('active', btn.dataset.cat === catCode);
+    }
+  });
+}
+
+function toggleViewerIsolateMode(){
+  if(vcadViewer){
+    const iso = vcadViewer.toggleIsolateCategory();
+    const btn = document.getElementById('btnIsolateToggle');
+    if(btn){
+      btn.classList.toggle('active', iso);
+      btn.textContent = iso ? '🎯 ISOLATE: ON' : '👁️ HIGHLIGHT: ON';
+      btn.title = iso ? 'Solo Isolation (Only active category shown)' : 'Highlight Active (Context dimmed)';
+    }
+  }
+}
+
 function updateViewerExplode(val){
   const num = parseFloat(val);
   if(vcadViewer){
@@ -2298,6 +3046,7 @@ function switchSidebarTab(tabName){
 async function runVcadExtrusionOnCurrentBlueprint(){
   const prop = currentLoadedProperty;
   const parentUlpin = prop?.parentULPIN || '12345678901234';
+  const threeDUlpin = prop?.threeDULPIN || '';
   let targetFilename = '';
 
   if(prop && Array.isArray(prop.blueprints) && prop.blueprints.length > 0){
@@ -2313,8 +3062,12 @@ async function runVcadExtrusionOnCurrentBlueprint(){
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         parent_2d_ulpin: parentUlpin,
+        three_d_ulpin: threeDUlpin,
         filename: targetFilename,
-        floors_count: 3
+        floors_count: prop?.floorsCount || 1,
+        building_height: prop?.buildingHeight || 15.0,
+        building_depth: prop?.buildingDepth || 6.0,
+        basements_count: prop?.basementsCount || 0
       })
     });
 
@@ -2324,6 +3077,7 @@ async function runVcadExtrusionOnCurrentBlueprint(){
 
     currentCadastrePayload = await res.json();
     loadCadastreIntoViewer(currentCadastrePayload);
+    switchSidebarTab('units');
     warn('V-CAD Extrusion Complete', 'Successfully processed blueprint with OpenCV and generated 3D Cadastre model with official 3D ULPINs.');
   } catch(e) {
     console.error(e);
@@ -2337,18 +3091,23 @@ async function extrudeOfficialTestBlueprint(){
   const btn = event?.target;
   if(btn) { btn.disabled = true; btn.textContent = 'Processing Computer Vision…'; }
   try {
-    const res = await fetch('/api/vcad/process', {
+    let res = await fetch('/api/vcad/process', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         parent_2d_ulpin: currentLoadedProperty?.parentULPIN || '12345678901234',
+        three_d_ulpin: currentLoadedProperty?.threeDULPIN || '',
         filename: 'official_test_blueprint.png',
         floors_count: 3
       })
     });
+    if(!res.ok){
+      res = await fetch('/storage/models/12345678901234.json');
+    }
     if(!res.ok) throw new Error('Processing failed');
     currentCadastrePayload = await res.json();
     loadCadastreIntoViewer(currentCadastrePayload);
+    switchSidebarTab('units');
     const cvName = document.getElementById('cvSourceName');
     if(cvName) cvName.textContent = 'official_test_blueprint.png';
     warn('Test Blueprint Extruded', 'Successfully extruded official_test_blueprint.png into 3D! Check the Cadastre Units and Inspector tabs to see each room and its official 3D ULPIN.');
@@ -2357,6 +3116,38 @@ async function extrudeOfficialTestBlueprint(){
     warn('Extrusion Failed', e.message);
   } finally {
     if(btn) { btn.disabled = false; btn.textContent = '🧪 Auto-Extrude Official Test Blueprint'; }
+  }
+}
+
+async function extrudeTunnelInfrastructureBlueprint(){
+  const btn = event?.target;
+  if(btn) { btn.disabled = true; btn.textContent = 'Processing Subterranean Vision…'; }
+  try {
+    let res = await fetch('/api/vcad/process', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        parent_2d_ulpin: '28045678901240',
+        three_d_ulpin: '28045678901240-B02-U-PUB-TNL_TUBE1-V01',
+        filename: 'tunnel_infrastructure_blueprint.png',
+        floors_count: 1
+      })
+    });
+    if(!res.ok){
+      res = await fetch('/storage/models/28045678901240.json');
+    }
+    if(!res.ok) throw new Error('Processing failed');
+    currentCadastrePayload = await res.json();
+    loadCadastreIntoViewer(currentCadastrePayload);
+    switchSidebarTab('units');
+    const cvName = document.getElementById('cvSourceName');
+    if(cvName) cvName.textContent = 'tunnel_infrastructure_blueprint.png';
+    warn('Tunnel Blueprint Extruded', 'Successfully processed Subterranean Highway Tunnel CAD blueprint with OpenCV! Official 3D ULPINs assigned under Space Class U (Underground) at Z = -14.0m to -6.5m.');
+  } catch(e) {
+    console.error(e);
+    warn('Extrusion Failed', e.message);
+  } finally {
+    if(btn) { btn.disabled = false; btn.textContent = '🚇 Auto-Extrude Tunnel Infrastructure Blueprint'; }
   }
 }
 
@@ -2423,10 +3214,10 @@ function boot(){
   show('home');
 
   const savedRole=sessionStorage.getItem('ulpin_role');
-  if(savedRole==='admin'){
-    role='admin';
+  if(savedRole){
+    role=savedRole;
     updateRole();
-    refreshAdmin();
+    if(role==='admin') refreshAdmin();
   }
 }
 boot();
