@@ -753,8 +753,8 @@ async def api_delete_infrastructure_domain(request):
     """Deletes an infrastructure domain from the registry."""
     ulpin = request.path_params.get("ulpin_3d", "").strip().upper()
     role = request.query_params.get("role", "")
-    if role == "citizen":
-        return JSONResponse({"error": "Unauthorized: Citizen accounts cannot delete government infrastructure records."}, status_code=403)
+    if role != "admin":
+        return JSONResponse({"error": "Unauthorized: Citizen accounts are View-Only. Only Cadastral Administrators can decommission government infrastructure records."}, status_code=403)
 
     props = load_properties()
     target_key = None

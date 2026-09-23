@@ -502,7 +502,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
       </div>
 
       <div style="display:flex;gap:8px;align-items:center">
-        <button type="button" id="btnAddInfraDomain" class="btn primary" style="font-size:12px;padding:7px 14px;display:inline-flex;align-items:center;gap:6px" onclick="openAddInfraModal()">
+        <button type="button" id="btnAddInfraDomain" class="btn primary" style="font-size:12px;padding:7px 14px;display:none;align-items:center;gap:6px" onclick="openAddInfraModal()">
           <span>➕ Add Public Infrastructure Domain</span>
         </button>
       </div>
@@ -971,10 +971,12 @@ function applyRolePermissions(){
     }
   }
   if(addInfraBtn){
-    if(role === 'citizen'){
-      addInfraBtn.title = 'Citizen account (View-Only). Administrator login required to register public infrastructure.';
-    } else {
+    if(role === 'admin'){
+      addInfraBtn.style.display = 'inline-flex';
       addInfraBtn.title = 'Register a new public infrastructure domain';
+    } else {
+      addInfraBtn.style.display = 'none';
+      addInfraBtn.title = 'Citizen account (View-Only). Administrator login required to register public infrastructure.';
     }
   }
 }
@@ -1387,7 +1389,7 @@ function renderInfraGrid(){
     const area = d.area || '—';
     const rights = d.rights || (cat === 'RAILWAY' ? 'RLW' : cat === 'ROADS' ? 'PUB' : 'GOV');
     const addr = d.address || 'Amaravathi Capital Region, Andhra Pradesh';
-    const isCitizen = role === 'citizen';
+    const isAdmin = role === 'admin';
 
     return `
       <div class="infra-card">
@@ -1415,9 +1417,11 @@ function renderInfraGrid(){
           <button type="button" class="btn primary" style="flex:1;font-size:11.5px;padding:6px 10px" onclick="open3DModelViewer('${escapeHtml(ulpin3d)}', '${escapeHtml(d.name || 'Infrastructure')}')">
             🌐 View 3D Cadastre
           </button>
-          <button type="button" class="btn outline" style="color:#dc2626;border-color:#fca5a5;padding:6px 10px;font-size:11.5px" title="${isCitizen ? 'Citizen View-Only: Admin required to delete' : 'Decommission/Delete government domain'}" onclick="deleteInfrastructureDomain('${escapeHtml(ulpin3d)}', '${escapeHtml(d.name || 'Infrastructure')}')">
+          ${isAdmin ? `
+          <button type="button" class="btn outline" style="color:#dc2626;border-color:#fca5a5;padding:6px 10px;font-size:11.5px" title="Decommission/Delete government domain" onclick="deleteInfrastructureDomain('${escapeHtml(ulpin3d)}', '${escapeHtml(d.name || 'Infrastructure')}')">
             🗑️ Delete
           </button>
+          ` : ''}
         </div>
       </div>
     `;
@@ -1552,8 +1556,8 @@ async function submitNewInfrastructureDomain(){
 }
 
 async function deleteInfrastructureDomain(ulpin3d, name){
-  if(role === 'citizen'){
-    return warn('Permission Denied', 'Citizen accounts (user@ulpin.gov.in) are View-Only. Cadastral Administrator authentication (admin@ulpin.gov.in) is required to delete government infrastructure records.');
+  if(role !== 'admin'){
+    return warn('Permission Denied', 'Citizen accounts (user@ulpin.gov.in) have View-Only access. Cadastral Administrator credentials (admin@ulpin.gov.in) are strictly required to decommission or delete government infrastructure domains.');
   }
 
   const ok = confirm(`Are you sure you want to decommission and delete the public infrastructure domain '${name}' (${ulpin3d})?\n\nThis will remove the statutory property entry and associated 3D model.`);
